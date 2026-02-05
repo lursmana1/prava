@@ -39,6 +39,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansGeorgian.variable} antialiased`}
       >
+        <script src="/CONSTS/exam.js" />
         {children}
       </body>
     </html>
