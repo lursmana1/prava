@@ -103,7 +103,7 @@ export default function Quiz({ questions }: { questions: ExamQuestion[] }) {
 
   return (
     <>
-      <div className="p-4 max-w-md">
+      <div className="p-4 ">
         <div className="flex justify-between mb-2">
           <div>
             {index + 1} / {questions.length}
@@ -113,18 +113,19 @@ export default function Quiz({ questions }: { questions: ExamQuestion[] }) {
         </div>
         <p className="font-georgian mb-4">{q.question}</p>
         <Image
-          src={q.img || null}
+          src={q.img ? "/" + q.img : "/images/png/defaultExam.png"}
           alt={q.question || ""}
-          width={100}
-          height={100}
+          className="w-full h-100"
+          width={"1000"}
+          height={500}
         />
-        <div className="space-y-2">
+        <div className="space-y-2 grid grid-cols-2 gap-2">
           {answers.map((a) => (
             <button
               key={a.key}
               onClick={() => handleSelect(a.key)}
               disabled={!!selected}
-              className={`block w-full text-left p-2 rounded border transition-colors ${
+              className={` w-full text-left flex  items-center p-2 rounded border transition-colors h-20 ${
                 selected
                   ? a.key === q.correct_answer
                     ? "bg-green-100 border-green-500"
