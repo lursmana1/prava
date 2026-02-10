@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Georgian } from "next/font/google";
 import "./globals.css";
+import Header from "@/app/layoutComponents/Header/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansGeorgian.variable} antialiased`}
       >
         <script src="/CONSTS/exam.js" />
+        <Header />
         {children}
       </body>
     </html>
