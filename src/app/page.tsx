@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Quiz from "@/components/Quiz/Quiz";
+import Quiz from "@/components/ExamQuiz/Quiz";
 import axios from "axios";
 interface HomePageProps {
   params: any;
@@ -37,20 +37,10 @@ interface HomePageProps {
 // }
 
 export default async function Home() {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-  const response = await axios
-    .get(`${BASE_URL}/questions?random=30&categories=1&subjects=18,19`)
-    .then((res) => res.data)
-    .catch((err) => {
-      console.log(err);
-      return [];
-    });
-
   return (
     <div className="flex min-h-screen items-center justify-center">
       <main className="section">
-        <Quiz questions={response} />
+        <h1>გამოცდის ბილეთები</h1>
       </main>
     </div>
   );
