@@ -10,4 +10,4 @@ const BaseApi = {
   }),
 };
 
-export default BaseApi;
+export default BaseApi.axiosInstance;
