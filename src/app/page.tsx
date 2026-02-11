@@ -1,9 +1,5 @@
-import { Metadata } from "next";
-import Quiz from "@/components/ExamQuiz/Quiz";
-import axios from "axios";
-interface HomePageProps {
-  params: any;
-}
+import Image from "next/image";
+import Link from "next/link";
 
 // export async function generateMetadata({
 //   params,
@@ -38,10 +34,23 @@ interface HomePageProps {
 
 export default async function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <main className="section">
-        <h1>გამოცდის ბილეთები</h1>
-      </main>
-    </div>
+    <>
+      <div className="section">
+        <img
+          className="w-full h-full object-cover rounded-lg"
+          src="https://static.vecteezy.com/system/resources/thumbnails/022/536/549/small/modern-banner-background-colorful-blue-and-purple-gradations-circles-eps-10-free-vector.jpg"
+          alt="banner"
+          width={1000}
+          height={1000}
+        />
+      </div>
+      <div className="flex items-center justify-center">
+        <main className="section">
+          <h1 className="font-georgian font-bold text-2xl">
+            გამოცდის ბილეთები
+          </h1>
+        </main>
+      </div>
+    </>
   );
 }
