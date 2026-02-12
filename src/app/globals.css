@@ -29,3 +29,40 @@
     --foreground: #ededed;
   }
 }
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideInNext {
+  from {
+    transform: translateX(28px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInPrev {
+  from {
+    transform: translateX(-28px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-next {
+  animation: slideInNext 200ms ease-out both;
+  will-change: transform, opacity;
+}
+
+.animate-slide-in-prev {
+  animation: slideInPrev 200ms ease-out both;
+  will-change: transform, opacity;
+}
