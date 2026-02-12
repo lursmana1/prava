@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { subjects } from "@/CONSTS/CategoryDummy";
+import { subjects } from "@/app/CONSTS/CategoryDummy";
 
 export default function SubjectPicker() {
   const router = useRouter();

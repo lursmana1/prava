@@ -1,140 +1,77 @@
 "use client";
-
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { ExamQuestion } from "@/lib/types/exam";
 import Image from "next/image";
 import QuizButton from "../QuizButton/QuizButton";
 import ExamHeader from "../ExamHeader/ExamHeader";
 import ExamRetryModal from "../Modals/ExamRetryModal.tsx/ExamRetryModal";
 import ExamFooter from "../ExamFooter/ExamFooter";
-
-const EXAM_DURATION_SECONDS = 30 * 60;
-const EXAM_TOTAL_QUESTIONS = 30;
-const PASS_SCORE = 27;
-const MAX_MISTAKES = 3;
+import ExamSuccessModal from "../Modals/ExamSucessModal/ExamSucessModal";
+import ExamCountDown from "../ExamCountDown/ExamCountDown";
+import useArrowNavigation from "@/app/utills/helpers/hooks/useArrowNavigation";
+import { useExamProgress } from "@/app/utills/helpers/hooks/useExamProgress";
+import { useQuestionNavigation } from "@/app/utills/helpers/hooks/useQuizNavigation";
+import {
+  EXAM_DURATION_SECONDS,
+  EXAM_TOTAL_QUESTIONS,
+  MAX_MISTAKES,
+  PASS_SCORE,
+} from "@/app/CONSTS/QuizExamConstats";
+import { getAnswers } from "@/app/utills/helpers/getAnswers";
 
 export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   const safeQuestions = Array.isArray(questions) ? questions : [];
   if (!safeQuestions.length) return null;
 
-  const examQuestions = useMemo(
-    () => safeQuestions.slice(0, EXAM_TOTAL_QUESTIONS),
-    [safeQuestions],
-  );
-
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
-  const [secondsLeft, setSecondsLeft] = useState(EXAM_DURATION_SECONDS);
+  // ✅ NO secondsLeft in parent
+  const [isTimeUp, setIsTimeUp] = useState(false);
+  const [timerRestartKey, setTimerRestartKey] = useState(0);
 
   // answers stored per question id (string keys => no TS issues)
   const [answersById, setAnswersById] = useState<Record<string, string>>({});
 
-  const q = examQuestions[index];
+  // gamocdis shedegebit dasatrekad
+  const { score, mistake, totalAnswered } = useExamProgress(
+    safeQuestions,
+    answersById,
+  );
+
+  const examFinished = totalAnswered >= EXAM_TOTAL_QUESTIONS || isTimeUp;
+  const examFailed = mistake > MAX_MISTAKES;
+  const examSuccess = score >= PASS_SCORE;
+
+  // ✅ navigation hook (index + direction + prev/next/reset)
+  const nav = useQuestionNavigation(
+    safeQuestions.length,
+    examFinished || examFailed,
+  );
+
+  // ✅ arrow navigation uses nav.prev/nav.next
+  useArrowNavigation(nav.prev, nav.next);
+
+  const q = safeQuestions[nav.index];
   if (!q) return null;
 
   const qId = String(q.id);
   const selectedAnswer = answersById[qId] ?? null;
 
-  const answers = [
-    { key: "1", text: q.answer_1 },
-    { key: "2", text: q.answer_2 },
-    { key: "3", text: q.answer_3 },
-    { key: "4", text: q.answer_4 },
-  ].filter((a) => Boolean(a.text));
+  const answers = getAnswers(q);
 
-  const { score, mistake, totalAnswered } = useMemo(() => {
-    let s = 0;
-    let m = 0;
-    let answered = 0;
-
-    for (const question of examQuestions) {
-      const picked = answersById[String(question.id)];
-      if (!picked) continue;
-
-      answered += 1;
-      if (picked === question.correct_answer) s += 1;
-      else m += 1;
-    }
-
-    return { score: s, mistake: m, totalAnswered: answered };
-  }, [answersById, examQuestions]);
-
-  const examFinished =
-    totalAnswered >= EXAM_TOTAL_QUESTIONS || secondsLeft <= 0;
-  const examSuccess = score >= PASS_SCORE;
-  const examFailed = mistake > MAX_MISTAKES;
-
-  // Timer (stops when finished)
-  useEffect(() => {
-    if (examFinished) return;
-
-    const id = setInterval(() => {
-      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(id);
-  }, [examFinished]);
-
-  const handleRestart = () => {
-    setIndex(0);
-    setDirection("next");
-    setSecondsLeft(EXAM_DURATION_SECONDS);
+  const handleRestart = useCallback(() => {
+    nav.reset(); // ✅ reset navigation
     setAnswersById({});
-  };
+    setIsTimeUp(false);
+    setTimerRestartKey((k) => k + 1);
+  }, [nav.reset]);
 
-  // lock answer per question (no changing)
-  const handleSelect = (key: string) => {
-    if (examFinished || examFailed) return;
-    if (answersById[qId]) return;
-
-    setAnswersById((prev) => ({ ...prev, [qId]: key }));
-  };
-
-  const handlePrevious = () => {
-    if (examFinished || examFailed) return;
-    setDirection("prev");
-    setIndex((i) => (i > 0 ? i - 1 : examQuestions.length - 1));
-  };
-
-  const handleNext = () => {
-    if (examFinished || examFailed) return;
-    setDirection("next");
-    setIndex((i) => (i + 1) % examQuestions.length);
-  };
-
-  const minutes = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
-  const seconds = String(secondsLeft % 60).padStart(2, "0");
-  const timeLabel = `${minutes}:${seconds}`;
-
-  if (examFinished) {
-    return (
-      <div className="p-4 max-w-md mx-auto text-center">
-        <h1
-          className={`text-2xl font-bold mb-4 ${
-            examSuccess ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {examSuccess ? "გამოცდა ჩაბარებულია!" : "გამოცდა ჩაიჭრა"}
-        </h1>
-
-        <p className="mb-2">
-          სწორი პასუხები: {score}/{EXAM_TOTAL_QUESTIONS}
-        </p>
-        <p className="mb-4">შეცდომები: {mistake}</p>
-
-        {secondsLeft <= 0 && totalAnswered < EXAM_TOTAL_QUESTIONS && (
-          <p className="mb-3 text-sm text-gray-600">დრო ამოიწურა.</p>
-        )}
-
-        <button
-          onClick={handleRestart}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-        >
-          თავიდან დაწყება
-        </button>
-      </div>
-    );
-  }
+  const handleSelect = useCallback(
+    (key: string) => {
+      if (examFinished || examFailed) return;
+      if (answersById[qId]) return;
+      setAnswersById((prev) => ({ ...prev, [qId]: key }));
+    },
+    [answersById, qId, examFinished, examFailed],
+  );
 
   return (
     <>
@@ -149,19 +86,25 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
         }}
       >
         <ExamHeader
-          timeLabel={timeLabel}
-          currentQuestion={index + 1}
-          totalQuestions={examQuestions.length}
+          timeLabel={
+            <ExamCountDown
+              initialSeconds={EXAM_DURATION_SECONDS}
+              paused={examFinished || examFailed}
+              restartKey={timerRestartKey}
+              onTimeUp={() => setIsTimeUp(true)}
+            />
+          }
+          currentQuestion={nav.index + 1}
+          totalQuestions={EXAM_TOTAL_QUESTIONS}
           correct={score}
           mistakes={mistake}
           questionId={q.id}
         />
 
-        {/* In-flow slide animation (no absolute => no layout breaking) */}
         <div
           key={qId}
           className={
-            direction === "next"
+            nav.direction === "next"
               ? "animate-slide-in-next"
               : "animate-slide-in-prev"
           }
@@ -170,8 +113,7 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
             <Image
               src={q.img ? "/" + q.img : "/png/download.png"}
               alt={q.question || ""}
-              // className="w-full h-auto"
-              className="m-auto"
+              className="m-auto h-auto max-h-110"
               width={1000}
               height={410}
               priority
@@ -199,13 +141,17 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
 
       <ExamFooter
         questions={answers}
-        showPrevious={handlePrevious}
-        showNext={handleNext}
+        showPrevious={nav.prev}
+        showNext={nav.next}
         selectAnswer={handleSelect}
       />
 
       {examFailed && (
         <ExamRetryModal handleRestart={handleRestart} mistake={mistake} />
+      )}
+
+      {examSuccess && examFinished && (
+        <ExamSuccessModal handleRestart={handleRestart} mistake={mistake} />
       )}
     </>
   );
