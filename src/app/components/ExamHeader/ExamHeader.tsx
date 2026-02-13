@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 type ExamHeaderProps = {
@@ -42,6 +43,9 @@ const ExamHeader = ({
         <div className={cellBase}>
           <span className="text-yellow-300">#{questionId}</span>
         </div>
+        <Link href={"/"} className={cellBase}>
+          prv.ge
+        </Link>
       </div>
     </div>
   );

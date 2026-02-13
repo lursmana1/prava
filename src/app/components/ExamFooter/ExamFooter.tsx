@@ -14,11 +14,11 @@ type ExamFooterProps = {
 
 const ExamFooter = (props: ExamFooterProps) => {
   return (
-    <div className="flex justify-between items-center bg-red-50 h-[10vh] w-full px-4">
+    <div className="flex justify-between items-center bg-red-50 h-[10vh] w-full px-4 rounded-lg">
       {/* Back */}
       <button
         onClick={props.showPrevious}
-        className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md"
+        className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
       >
         <Image src={leftSide} alt={""} width={32} height={32} />
       </button>
@@ -48,7 +48,7 @@ const ExamFooter = (props: ExamFooterProps) => {
 
       <button
         onClick={props.showNext}
-        className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md"
+        className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
       >
         <Image src={rightSide} width={32} height={32} alt="zd" />
       </button>
