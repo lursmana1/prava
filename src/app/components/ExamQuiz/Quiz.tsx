@@ -111,7 +111,7 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
         >
           {!!q.hasImg && (
             <Image
-              src={q.img ? "/" + q.img : "/png/download.png"}
+              src={"/" + q.img}
               alt={q.question || ""}
               className="m-auto h-auto max-h-110"
               width={1000}
