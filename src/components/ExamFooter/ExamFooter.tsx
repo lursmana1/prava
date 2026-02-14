@@ -1,6 +1,6 @@
 import Image from "next/image";
-import leftSide from "../../../../public/png/left.png";
-import rightSide from "../../../../public/png/right.png";
+import leftSide from "../../../public/png/left.png";
+import rightSide from "../../../public/png/right.png";
 
 type ExamFooterProps = {
   questions: {

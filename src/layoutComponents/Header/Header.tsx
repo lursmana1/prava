@@ -40,10 +40,18 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href="/subject"
+                href="/subjectpicker"
                 className="rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
                 გამოცდა (საკითხების არჩევა)
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/tickets"
+                className="rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
+              >
+                ბილეთები
               </Link>
             </li>
             <li>
