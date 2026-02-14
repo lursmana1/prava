@@ -1,4 +1,4 @@
-import Header from "@/app/layoutComponents/Header/Header";
+import Header from "@/layoutComponents/Header/Header";
 
 export default function WithHeaderLayout({
   children,

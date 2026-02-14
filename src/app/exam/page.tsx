@@ -1,7 +1,5 @@
-import BaseApi from "@/app/api/BaseApi";
-import ExamQuiz from "@/app/components/ExamQuiz/Quiz";
-
-// Disable Next.js static caching for this page
+import BaseApi from "@/api/BaseApi";
+import ExamQuiz from "@/components/ExamQuiz/Quiz";
 
 type ExamPageProps = {
   searchParams?: Promise<{ subjects?: string | string[] }>;
@@ -18,15 +16,6 @@ export default async function ExamPage({ searchParams }: ExamPageProps) {
   } else if (typeof subjectsRaw === "string" && subjectsRaw.length > 0) {
     subjects = subjectsRaw.split(",");
   }
-
-  // if (subjects.length === 0) {
-  //   return (
-  //     <div className="section">
-  //       <h1>გამოცდა</h1>
-  //       <p>აირჩიე საგანი</p>
-  //     </div>
-  //   );
-  // }
 
   const questions = await BaseApi.get("/questions", {
     params: { subjects: subjects.join(","), random: 30, categories: 1 },

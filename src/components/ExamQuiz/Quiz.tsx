@@ -8,29 +8,26 @@ import ExamRetryModal from "../Modals/ExamRetryModal.tsx/ExamRetryModal";
 import ExamFooter from "../ExamFooter/ExamFooter";
 import ExamSuccessModal from "../Modals/ExamSucessModal/ExamSucessModal";
 import ExamCountDown from "../ExamCountDown/ExamCountDown";
-import useArrowNavigation from "@/app/utills/helpers/hooks/useArrowNavigation";
-import { useExamProgress } from "@/app/utills/helpers/hooks/useExamProgress";
-import { useQuestionNavigation } from "@/app/utills/helpers/hooks/useQuizNavigation";
 import {
-  EXAM_DURATION_SECONDS,
   EXAM_TOTAL_QUESTIONS,
   MAX_MISTAKES,
   PASS_SCORE,
-} from "@/app/CONSTS/QuizExamConstats";
-import { getAnswers } from "@/app/utills/helpers/getAnswers";
+  EXAM_DURATION_SECONDS,
+} from "@/CONSTS/QuizExamConstats";
+import { getAnswers } from "@/utills/helpers/getAnswers";
+import useArrowNavigation from "@/utills/helpers/hooks/useArrowNavigation";
+import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
+import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
 
 export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   const safeQuestions = Array.isArray(questions) ? questions : [];
   if (!safeQuestions.length) return null;
 
-  // ✅ NO secondsLeft in parent
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [timerRestartKey, setTimerRestartKey] = useState(0);
 
-  // answers stored per question id (string keys => no TS issues)
   const [answersById, setAnswersById] = useState<Record<string, string>>({});
 
-  // gamocdis shedegebit dasatrekad
   const { score, mistake, totalAnswered } = useExamProgress(
     safeQuestions,
     answersById,
@@ -40,13 +37,11 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   const examFailed = mistake > MAX_MISTAKES;
   const examSuccess = score >= PASS_SCORE;
 
-  // ✅ navigation hook (index + direction + prev/next/reset)
   const nav = useQuestionNavigation(
     safeQuestions.length,
     examFinished || examFailed,
   );
 
-  // ✅ arrow navigation uses nav.prev/nav.next
   useArrowNavigation(nav.prev, nav.next);
 
   const q = safeQuestions[nav.index];
@@ -58,7 +53,7 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   const answers = getAnswers(q);
 
   const handleRestart = useCallback(() => {
-    nav.reset(); // ✅ reset navigation
+    nav.reset();
     setAnswersById({});
     setIsTimeUp(false);
     setTimerRestartKey((k) => k + 1);
@@ -75,8 +70,9 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
 
   return (
     <>
+      {/* 👇 SCROLLBAR APPLIED HERE */}
       <div
-        className="p-4 h-[90vh] overflow-auto overflow-x-hidden"
+        className="p-4 h-[90vh] overflow-auto overflow-x-hidden exam-scroll"
         style={{
           backgroundImage: "url('/png/download.png')",
           backgroundColor: "#193e4a",
