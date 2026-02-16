@@ -4,23 +4,34 @@ import Image from "next/image";
 
 type CategoryCardProps = {
   category: Category;
+  isActive?: boolean;
 };
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({ category, isActive }: CategoryCardProps) => {
   return (
     <Link
       href={`/tickets/${category.id}`}
-      className=" w-40 rounded-xl bg-gray-200 p-4 flex flex-col items-center justify-center gap-3 text-center hover:bg-gray-300 transition select-none "
+      className={`
+        w-28 rounded-xl p-3
+        flex flex-col items-center justify-center
+        gap-2 text-center
+        transition select-none
+        ${
+          isActive
+            ? "bg-blue-600 text-white shadow-md"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+        }
+      `}
     >
       <Image
         src={`/svg/${category.iconKey}.svg`}
-        width={72}
-        height={72}
+        width={32}
+        height={32}
         alt={category.name}
-        className="opacity-80"
+        className={`w-auto h-auto ${isActive ? "brightness-0 invert" : "opacity-80"}`}
       />
 
-      <span className="text-gray-700 font-medium">{category.name}</span>
+      <span className="font-medium text-sm">{category.name}</span>
     </Link>
   );
 };

@@ -70,7 +70,6 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
 
   return (
     <>
-      {/* 👇 SCROLLBAR APPLIED HERE */}
       <div
         className="p-4 h-[90vh] overflow-auto overflow-x-hidden exam-scroll"
         style={{

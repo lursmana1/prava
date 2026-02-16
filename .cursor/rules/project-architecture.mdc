@@ -1,0 +1,88 @@
+---
+description: Full-stack architecture for prava.ge — Georgian driving license exam prep platform. Frontend + backend contract.
+alwaysApply: true
+---
+
+# Prava.ge — Project Architecture
+
+## Overview
+Georgian driving license exam preparation platform. Users practice with exam tickets (by category/subject), take timed exams, and review questions.
+
+## Frontend (this repo)
+- **Framework**: Next.js 16 (App Router) + React 19 + TypeScript
+- **Styling**: Tailwind CSS 4 + Ant Design 6
+- **HTTP**: Axios (`src/api/BaseApi.ts`) → `http://localhost:3000` with `withCredentials: true`
+- **Path alias**: `@/*` → `./src/*`
+
+### Key Routes
+| Route | Type | Description |
+|---|---|---|
+| `/` | Server | Home page (withHeader layout) |
+| `/tickets/[category]` | Server | Paginated questions filtered by category + subject |
+| `/subjectpicker` | Client | Multi-select subjects before exam |
+| `/exam` | Server+Client | Timed exam (30 min, 30 questions, max 3 mistakes) |
+
+### Component Structure
+- `TicketsQuiz` — single ticket question display + answer selection
+- `ExamQuiz` — full exam flow with navigation, timer, scoring
+- `QuizButton` — answer button with correct/incorrect states
+- `CategoryCard` — category link card with active state
+- `SubjectAsideMenu` / `SubjectMenuCard` — sidebar subject filter (toggleable)
+- `TicketPagination` — Ant Design pagination wrapper using URL params
+- `ExamFooter` — answer key bar / navigation (shared between exam & tickets)
+
+### State Management
+- No global state library. Uses `useState`, URL search params, custom hooks.
+- Custom hooks: `useQuizNavigation`, `useExamProgress`, `useArrowNavigation`, `useWindowSize`
+
+## Backend (github.com/lursmana1/nest)
+- **Framework**: NestJS 11 + TypeScript
+- **Databases**: MongoDB (Mongoose) + MySQL (TypeORM)
+- **Auth**: JWT via httpOnly cookies (Passport)
+- **Port**: 3000, CORS allows frontend at 3001
+
+### Database Split
+| DB | ORM | Stores |
+|---|---|---|
+| MongoDB | Mongoose | questions, categories, exams |
+| MySQL | TypeORM | users, products |
+
+### API Endpoints (used by frontend)
+```
+GET /categories                              → Category[]
+GET /categories/:id                          → Category
+GET /questions?category=&subjects=&page=&size= → { items, page, size, total, totalPages }
+GET /questions/random?count=&subjects=&category= → Question[]
+GET /questions/:id                           → Question
+```
+
+### API Endpoints (built, not yet used by frontend)
+```
+GET    /exams/generate?subjects=&categories=&count= → Exam (saved to DB)
+GET    /exams         → Exam[]
+GET    /exams/:id     → Exam
+POST   /exams         → Exam (manual questionIds)
+PATCH  /exams/:id     → Exam
+DELETE /exams/:id     → { deleted: true }
+POST   /auth/register → { user } + sets access_token cookie
+POST   /auth/login    → { user } + sets access_token cookie
+POST   /auth/logout   → { ok: true } + clears cookie
+```
+
+### MongoDB Schemas
+**Question** (`questions` collection): `id, question, question_explained, correct_answer, answer_1-4, subject (number), categories (number[]), hasImg, img, audio`
+
+**Category** (`categories` collection): `id, name, iconKey, questionsCount, subjectCount, subjects[] (embedded: id, name, questionsCount)`
+
+**Exam** (`exams` collection): `title, questions (ObjectId[] ref → Question), timestamps`
+
+### MySQL Entities
+**User**: `id, name, email, age, password, products[]`
+**Product**: `id, ..., creator (→ User)`
+
+## Conventions
+- Server Components for data fetching, Client Components (`"use client"`) for interactivity
+- Tailwind classes preferred over inline styles
+- Feature-based component folders (component + types in same dir)
+- Georgian font: `font-georgian` utility class
+- Pagination via URL search params (`page`, `size`, `subjects`)
