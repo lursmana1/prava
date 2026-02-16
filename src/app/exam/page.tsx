@@ -17,8 +17,12 @@ export default async function ExamPage({ searchParams }: ExamPageProps) {
     subjects = subjectsRaw.split(",");
   }
 
-  const questions = await BaseApi.get("/questions", {
-    params: { subjects: subjects.join(","), random: 30, categories: 1 },
+  const questions = await BaseApi.get("/questions/random", {
+    params: {
+      subjects: subjects.join(","), // "1,2,3"
+      category: 1, // ✅ keep plural if backend uses plural
+      count: 30, // ✅
+    },
   }).then((r) => r.data);
   console.log(questions);
 
