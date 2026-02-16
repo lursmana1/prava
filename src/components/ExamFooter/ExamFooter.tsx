@@ -7,24 +7,26 @@ type ExamFooterProps = {
     key: string;
     text: string | null;
   }[];
-  showPrevious: () => void;
-  showNext: () => void;
+  showPrevious?: () => void;
+  showNext?: () => void;
   selectAnswer: (key: string) => void;
 };
 
 const ExamFooter = (props: ExamFooterProps) => {
+  const navigationVisibility = !!props.showNext;
   return (
     <div className="flex justify-between items-center bg-red-50 h-[10vh] w-full px-4 rounded-lg">
-      {/* Back */}
-      <button
-        onClick={props.showPrevious}
-        className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
-      >
-        <Image src={leftSide} alt={""} width={32} height={32} />
-      </button>
+      {navigationVisibility && (
+        <button
+          onClick={props.showPrevious}
+          className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+        >
+          <Image src={leftSide} alt={""} width={32} height={32} />
+        </button>
+      )}
 
       {/* Question Numbers */}
-      <div className="flex gap-2 overflow-x-auto">
+      <div className="flex gap-2 overflow-x-auto justify-center flex-1">
         {props.questions.map((question) => (
           <div
             key={question.key}
@@ -46,12 +48,14 @@ const ExamFooter = (props: ExamFooterProps) => {
         ))}
       </div>
 
-      <button
-        onClick={props.showNext}
-        className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
-      >
-        <Image src={rightSide} width={32} height={32} alt="zd" />
-      </button>
+      {navigationVisibility && (
+        <button
+          onClick={props.showNext}
+          className="p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+        >
+          <Image src={rightSide} width={32} height={32} alt="zd" />
+        </button>
+      )}
     </div>
   );
 };

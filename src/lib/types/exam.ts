@@ -13,5 +13,13 @@ export interface ExamQuestion {
   audio: string | null;
   hasImg: number;
   img?: string | null;
-  imgSize?:  null;
+  imgSize?: null;
 }
+
+export type QuestionsResponse = {
+  items: ExamQuestion[];
+  page: number;
+  size: number;
+  total: number;
+  totalPages: number;
+};

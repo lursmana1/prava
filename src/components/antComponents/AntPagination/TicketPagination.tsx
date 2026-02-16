@@ -24,9 +24,6 @@ export default function TicketsPagination({
     sp.set("page", String(nextPage));
     sp.set("size", String(nextSize));
 
-    // keep subjects if present
-    // (no changes needed; URLSearchParams already contains it)
-
     router.push(`${pathname}?${sp.toString()}`);
   };
 
@@ -38,7 +35,7 @@ export default function TicketsPagination({
       showSizeChanger
       pageSizeOptions={[10, 20, 40]}
       onChange={(p, s) => setParams(p, s)}
-      onShowSizeChange={(p, s) => setParams(1, s)} // reset to page 1 on size change
+      onShowSizeChange={(p, s) => setParams(1, s)}
       showTotal={(t, range) => `${range[0]}-${range[1]} / ${t}`}
     />
   );

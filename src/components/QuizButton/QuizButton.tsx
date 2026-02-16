@@ -18,15 +18,15 @@ const QuizButton = ({
   const isThisCorrect = answerKey === correctAnswer;
 
   const base =
-    "w-full h-full text-left font-georgian text-white flex items-start rounded border transition-colors p-3 leading-snug break-words";
+    "w-full text-left font-georgian text-white flex items-center gap-4 rounded border transition p-4 leading-snug";
 
   const stateClass = hasSelected
     ? isThisCorrect
-      ? "bg-[#05c300c9] border-[#c3e6cb;] text-black"
+      ? "bg-[#05c300c9] border-[#c3e6cb] text-black"
       : isThisSelected
         ? "bg-[#ff3346a8] border-[#f5c6cb] text-black"
         : "border-gray-300 opacity-70"
-    : "border-gray-300 hover:border-blue-300 cursor-pointer";
+    : "border-gray-300 hover:border-blue-300 cursor-pointer"; // ✅ NO background
 
   return (
     <button
@@ -35,7 +35,13 @@ const QuizButton = ({
       disabled={hasSelected}
       className={`${base} ${stateClass}`}
     >
-      {answerText}
+      {/* Key badge */}
+      <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gray-200 text-black font-semibold text-lg shrink-0">
+        {answerKey}
+      </div>
+
+      {/* Text */}
+      <div className="break-words">{answerText}</div>
     </button>
   );
 };
