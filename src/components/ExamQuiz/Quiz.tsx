@@ -20,8 +20,10 @@ import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
 import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
 
 export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
-  const safeQuestions = Array.isArray(questions) ? questions : [];
-  if (!safeQuestions.length) return null;
+  const safeQuestions = useMemo(
+    () => (Array.isArray(questions) ? questions : []),
+    [questions],
+  );
 
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [timerRestartKey, setTimerRestartKey] = useState(0);
@@ -45,12 +47,9 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   useArrowNavigation(nav.prev, nav.next);
 
   const q = safeQuestions[nav.index];
-  if (!q) return null;
-
-  const qId = String(q.id);
+  const qId = q ? String(q.id) : "";
   const selectedAnswer = answersById[qId] ?? null;
-
-  const answers = getAnswers(q);
+  const answers = q ? getAnswers(q) : [];
 
   const handleRestart = useCallback(() => {
     nav.reset();
@@ -62,11 +61,15 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   const handleSelect = useCallback(
     (key: string) => {
       if (examFinished || examFailed) return;
-      if (answersById[qId]) return;
-      setAnswersById((prev) => ({ ...prev, [qId]: key }));
+      setAnswersById((prev) => {
+        if (prev[qId]) return prev;
+        return { ...prev, [qId]: key };
+      });
     },
-    [answersById, qId, examFinished, examFailed],
+    [qId, examFinished, examFailed],
   );
+
+  if (!safeQuestions.length || !q) return null;
 
   return (
     <>
