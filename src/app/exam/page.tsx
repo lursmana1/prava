@@ -2,13 +2,17 @@ import BaseApi from "@/api/BaseApi";
 import ExamQuiz from "@/components/ExamQuiz/Quiz";
 
 type ExamPageProps = {
-  searchParams?: Promise<{ subjects?: string | string[] }>;
+  searchParams?: Promise<{
+    subjects?: string | string[];
+    category?: string;
+  }>;
 };
 
 export default async function ExamPage({ searchParams }: ExamPageProps) {
   const sp = searchParams ? await searchParams : undefined;
 
   const subjectsRaw = sp?.subjects;
+  const categoryRaw = sp?.category;
 
   let subjects: string[] = [];
   if (Array.isArray(subjectsRaw)) {
@@ -17,14 +21,15 @@ export default async function ExamPage({ searchParams }: ExamPageProps) {
     subjects = subjectsRaw.split(",");
   }
 
+  const category = categoryRaw ? Number(categoryRaw) : 1;
+
   const questions = await BaseApi.get("/questions/random", {
     params: {
-      subjects: subjects.join(","), // "1,2,3"
-      category: 1, // ✅ keep plural if backend uses plural
-      count: 30, // ✅
+      subjects: subjects.join(","),
+      category: category,
+      count: 30,
     },
   }).then((r) => r.data);
-  console.log(questions);
 
   return (
     <div className="bg-[#193e4a]">

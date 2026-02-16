@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type ExamTimerProps = {
   initialSeconds: number;
   paused?: boolean;
   onTimeUp: () => void;
-  restartKey?: number; // change to reset timer
+  restartKey?: number;
 };
 
 function formatTime(secondsLeft: number) {
@@ -22,15 +22,15 @@ export default function ExamCountDown({
   restartKey = 0,
 }: ExamTimerProps) {
   const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
+  const onTimeUpRef = useRef(onTimeUp);
+  onTimeUpRef.current = onTimeUp;
 
-  // reset when restartKey changes
   useEffect(() => {
     setSecondsLeft(initialSeconds);
   }, [initialSeconds, restartKey]);
 
   useEffect(() => {
-    if (paused) return;
-    if (secondsLeft <= 0) return;
+    if (paused || secondsLeft <= 0) return;
 
     const id = window.setInterval(() => {
       setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
@@ -40,8 +40,8 @@ export default function ExamCountDown({
   }, [paused, secondsLeft]);
 
   useEffect(() => {
-    if (secondsLeft === 0) onTimeUp();
-  }, [secondsLeft, onTimeUp]);
+    if (secondsLeft === 0) onTimeUpRef.current();
+  }, [secondsLeft]);
 
   const label = useMemo(() => formatTime(secondsLeft), [secondsLeft]);
 
