@@ -1,58 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useTransition } from "react";
 import Image from "next/image";
+import { Select } from "antd";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Category } from "@/lib/types/category";
 
 type CategorySelectProps = {
   categories: Category[];
-  onChange?: (categoryId: number) => void;
+  activeCategoryId: number;
 };
 
-const CategorySelect = ({ categories, onChange }: CategorySelectProps) => {
-  const [selectedId, setSelectedId] = useState<number>(categories[0]?.id ?? 0);
+const CategorySelect = ({
+  categories,
+  activeCategoryId,
+}: CategorySelectProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const handleSelect = (id: number) => {
-    setSelectedId(id);
-    onChange?.(id);
+    const sp = new URLSearchParams(searchParams.toString());
+    sp.set("category", String(id));
+    startTransition(() => {
+      router.push(`/subjectpicker?${sp.toString()}`);
+    });
   };
 
   return (
-    <div className="flex flex-wrap gap-3 justify-center">
-      {categories.map((cat) => {
-        const isActive = cat.id === selectedId;
-        return (
-          <button
-            key={cat.id}
-            type="button"
-            onClick={() => handleSelect(cat.id)}
-            className={`
-              flex flex-col items-center justify-center gap-1.5
-              w-24 h-24 rounded-xl border-2 transition-all cursor-pointer
-              ${
-                isActive
-                  ? "border-blue-600 bg-blue-600 text-white shadow-lg scale-105"
-                  : "border-gray-200 bg-white text-gray-700 hover:border-blue-300 hover:bg-blue-50"
-              }
-            `}
-          >
+    <Select
+      value={activeCategoryId}
+      onChange={handleSelect}
+      className="w-full [&_.ant-select-selector]:h-14! [&_.ant-select-selection-item]:text-lg! [&_.ant-select-selection-item]:leading-14!"
+      size="large"
+      optionLabelProp="label"
+    >
+      {categories.map((cat) => (
+        <Select.Option
+          key={cat.id}
+          value={cat.id}
+          label={
+            <span className="inline-flex items-center gap-3">
+              <Image
+                src={`/svg/${cat.iconKey}.svg`}
+                width={28}
+                height={28}
+                alt={cat.name}
+                className="w-7 h-7 shrink-0 opacity-80"
+              />
+              <span className="text-lg font-semibold">{cat.name}</span>
+            </span>
+          }
+        >
+          <div className="flex items-center gap-4 py-1">
             <Image
               src={`/svg/${cat.iconKey}.svg`}
               width={28}
               height={28}
               alt={cat.name}
-              className={`w-auto h-auto ${isActive ? "brightness-0 invert" : "opacity-70"}`}
+              className="w-7 h-7 shrink-0 opacity-80"
             />
-            <span className="text-xs font-semibold leading-tight text-center">
-              {cat.name}
+            <span className="text-base font-semibold">{cat.name}</span>
+            <span className="text-sm text-gray-400 ml-auto">
+              {cat.questionsCount} კითხვა
             </span>
-            <span className={`text-[10px] ${isActive ? "text-blue-100" : "text-gray-400"}`}>
-              {cat.questionsCount}
-            </span>
-          </button>
-        );
-      })}
-    </div>
+          </div>
+        </Select.Option>
+      ))}
+    </Select>
   );
 };
 

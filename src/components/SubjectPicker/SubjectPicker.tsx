@@ -2,32 +2,38 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Checkbox, Divider, Row, Col, Card } from "antd";
+import { Button, Checkbox, Divider, Row, Col } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { subjects } from "@/CONSTS/subjectDummy";
+import { Subject } from "@/lib/types/subject";
 
-export default function SubjectPicker() {
+type SubjectPickerProps = {
+  categoryId: number;
+  subjects: Subject[];
+};
+
+export default function SubjectPicker({
+  categoryId,
+  subjects,
+}: SubjectPickerProps) {
   const router = useRouter();
 
-  // Ant Checkbox.Group is happy with number[] as long as option values are numbers
+  const allIds = useMemo(() => subjects.map((s) => s.id), [subjects]);
+  const [selected, setSelected] = useState<number[]>(allIds);
+
   const options = useMemo(
     () =>
       subjects.map((s, idx) => ({
         label: `${idx + 1}. ${s.name}`,
-        value: s.id, // number
+        value: s.id,
+        totalCount: s.questionsCount,
       })),
-    [],
+    [subjects],
   );
 
-  const allIds = useMemo(() => subjects.map((s) => s.id), []);
-
-  const [selected, setSelected] = useState<number[]>([]);
-
-  const allChecked = selected.length === allIds.length;
+  const allChecked = selected.length === allIds.length && allIds.length > 0;
   const indeterminate = selected.length > 0 && !allChecked;
 
   const onChange = (values: (string | number)[]) => {
-    // values will be numbers in your case, but Ant types it loosely
     setSelected(values as number[]);
   };
 
@@ -37,12 +43,18 @@ export default function SubjectPicker() {
 
   const startExam = () => {
     if (!selected.length) return;
-    const ids = selected.join(",");
-    router.push(`/exam?subjects=${encodeURIComponent(ids)}`);
+    const params = new URLSearchParams({
+      category: String(categoryId),
+      subjects: selected.join(","),
+    });
+    router.push(`/exam?${params.toString()}`);
   };
 
   return (
     <div className="max-w-6xl mx-auto p-4 font-georgian!">
+
+      <Divider className="my-4" />
+
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <Checkbox
           indeterminate={indeterminate}
@@ -65,12 +77,16 @@ export default function SubjectPicker() {
       <Divider className="my-4" />
 
       <Checkbox.Group value={selected} onChange={onChange} className="w-full">
-        <Row gutter={[24, 12]}>
+        <Row>
           {options.map((opt) => (
             <Col key={String(opt.value)} xs={24} md={12}>
               <div className="py-2 px-2 rounded hover:bg-slate-50 transition">
-                <Checkbox value={opt.value} className="text-[15px]">
+                <Checkbox
+                  value={opt.value}
+                  className="text-[12px] font-bold font-georgian!"
+                >
                   {opt.label}
+                  {opt.totalCount && ` (${opt.totalCount})`}
                 </Checkbox>
               </div>
             </Col>
