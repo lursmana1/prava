@@ -1,5 +1,3 @@
-"use client";
-import { useCallback, useState } from "react";
 import type { ExamQuestion } from "@/lib/types/exam";
 import Image from "next/image";
 import QuizButton from "../QuizButton/QuizButton";
@@ -8,19 +6,21 @@ import { getAnswers } from "@/utills/helpers/getAnswers";
 
 type TicketQuizProps = {
   question: ExamQuestion;
+  selectedAnswer: string | null;
+  onSelect: (questionId: string, key: string) => void;
 };
 
-export default function TicketQuiz({ question }: TicketQuizProps) {
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
+export default function TicketQuiz({
+  question,
+  selectedAnswer,
+  onSelect,
+}: TicketQuizProps) {
   const answers = getAnswers(question);
+  const qId = String(question.id);
 
-  const handleSelect = useCallback(
-    (key: string) => {
-      setSelectedAnswer((prev) => prev ?? key);
-    },
-    [],
-  );
+  const handleSelect = (key: string) => {
+    onSelect(qId, key);
+  };
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function TicketQuiz({ question }: TicketQuizProps) {
         </div>
       </div>
 
-      <ExamFooter questions={answers} selectAnswer={handleSelect} />
+      <ExamFooter questions={answers} selectAnswer={handleSelect} selectedAnswer={selectedAnswer || undefined} />
     </>
   );
 }

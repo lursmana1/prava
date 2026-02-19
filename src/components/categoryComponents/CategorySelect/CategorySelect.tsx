@@ -3,8 +3,10 @@
 import { useTransition } from "react";
 import Image from "next/image";
 import { Select } from "antd";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import { Category } from "@/lib/types/category";
+import { useTranslations } from "next-intl";
 
 type CategorySelectProps = {
   categories: Category[];
@@ -18,6 +20,7 @@ const CategorySelect = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("Categories");
 
   const handleSelect = (id: number) => {
     const sp = new URLSearchParams(searchParams.toString());
@@ -65,7 +68,7 @@ const CategorySelect = ({
             />
             <span className="text-base font-semibold">{cat.name}</span>
             <span className="text-sm text-gray-400 ml-auto">
-              {cat.questionsCount} კითხვა
+              {t("questionCount", { count: cat.questionsCount })}
             </span>
           </div>
         );

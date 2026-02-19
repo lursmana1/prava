@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 type SubjectMenuCardProps = {
   category: string;
@@ -13,7 +14,8 @@ type SubjectMenuCardProps = {
   };
 };
 
-const SubjectMenuCard = ({ category, sp, subject }: SubjectMenuCardProps) => {
+const SubjectMenuCard = async ({ category, sp, subject }: SubjectMenuCardProps) => {
+  const t = await getTranslations("Tickets");
   const isActive = sp.subjects === String(subject.id);
 
   const newParams = new URLSearchParams({
@@ -22,7 +24,6 @@ const SubjectMenuCard = ({ category, sp, subject }: SubjectMenuCardProps) => {
     subjects: isActive ? "" : String(subject.id),
   });
 
-  // Remove empty subjects param from URL
   if (!newParams.get("subjects")) {
     newParams.delete("subjects");
   }
@@ -40,7 +41,7 @@ const SubjectMenuCard = ({ category, sp, subject }: SubjectMenuCardProps) => {
       `}
     >
       <div className="font-medium">{subject.name}</div>
-      <div className="text-xs opacity-70">საკითხი #{subject.id}</div>
+      <div className="text-xs opacity-70">{t("subjectNumber", { id: subject.id })}</div>
     </Link>
   );
 };

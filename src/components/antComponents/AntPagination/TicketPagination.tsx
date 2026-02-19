@@ -1,7 +1,8 @@
 "use client";
 
 import { Pagination } from "antd";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
 type TicketsPaginationProps = {
   page: number;

@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Georgian } from "next/font/google";
 import "./globals.css";
 
@@ -18,8 +18,6 @@ const notoSansGeorgian = Noto_Sans_Georgian({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-// export const metadata: Metadata = buildMetadata();
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -32,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ka_GE">
+    <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
