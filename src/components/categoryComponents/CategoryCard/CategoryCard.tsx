@@ -12,9 +12,9 @@ const CategoryCard = ({ category, isActive }: CategoryCardProps) => {
     <Link
       href={`/tickets/${category.id}`}
       className={`
-        w-28 rounded-xl p-3
+        w-full min-w-0 rounded-lg p-2 lg:p-3
         flex flex-col items-center justify-center
-        gap-2 text-center
+        gap-1 lg:gap-2 text-center
         transition select-none
         ${
           isActive
@@ -25,13 +25,13 @@ const CategoryCard = ({ category, isActive }: CategoryCardProps) => {
     >
       <Image
         src={`/svg/${category.iconKey}.svg`}
-        width={32}
-        height={32}
+        width={28}
+        height={28}
         alt={category.name}
-        className={`w-auto h-auto ${isActive ? "brightness-0 invert" : "opacity-80"}`}
+        className={`w-7 h-7 lg:w-8 lg:h-8 shrink-0 ${isActive ? "brightness-0 invert" : "opacity-80"}`}
       />
 
-      <span className="font-medium text-sm">{category.name}</span>
+      <span className="font-medium text-xs lg:text-sm truncate w-full">{category.name}</span>
     </Link>
   );
 };

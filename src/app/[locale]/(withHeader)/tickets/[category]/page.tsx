@@ -1,6 +1,6 @@
 import BaseApi from "@/api/BaseApi";
 import TicketsPagination from "@/components/antComponents/AntPagination/TicketPagination";
-import CategoryCard from "@/components/categoryComponents/CategoryCard/CategoryCard";
+import CategoryCardsGrid from "@/components/categoryComponents/CategoryCardsGrid/CategoryCardsGrid";
 import TicketsQuizList from "@/components/TicketsQuiz/TicketsQuizList";
 import { Category } from "@/lib/types/category";
 import { type QuestionsResponse } from "@/lib/types/exam";
@@ -34,24 +34,19 @@ export default async function TicketsCategoryPage({
 
   return (
     <div className="section space-y-6">
-      {/* Top categories row (full width) */}
-      <div className="flex gap-4 flex-wrap">
-        {categories.map((c) => (
-          <CategoryCard
-            key={c.id}
-            category={c}
-            isActive={c.id === categoryId}
-          />
-        ))}
-      </div>
+      {/* Top categories - 2 cols mobile, 1 col desktop */}
+      <CategoryCardsGrid
+        categories={categories}
+        activeCategoryId={categoryId}
+      />
 
-      {/* 2-column layout */}
+      {/* 2-column layout: content first on mobile, sidebar left on desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
-        {/* LEFT */}
+        {/* LEFT - sidebar on desktop, below content on mobile */}
         <SubjectAsideMenu category={category} sp={sp} />
 
-        {/* RIGHT */}
-        <main className="space-y-6">
+        {/* RIGHT - main content */}
+        <main className="space-y-6 order-1 lg:order-2">
           <div className="flex justify-end">
             <TicketsPagination
               page={questionsRes.page}
