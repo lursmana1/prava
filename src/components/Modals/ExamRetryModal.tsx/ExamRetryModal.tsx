@@ -1,4 +1,5 @@
 import Modal from "antd/es/modal/Modal";
+import { useTranslations } from "next-intl";
 
 type ExamRetryModalProps = {
   handleRestart: () => void;
@@ -6,6 +7,8 @@ type ExamRetryModalProps = {
 };
 
 const ExamRetryModal = (props: ExamRetryModalProps) => {
+  const t = useTranslations("Exam");
+
   return (
     <Modal
       open
@@ -13,12 +16,12 @@ const ExamRetryModal = (props: ExamRetryModalProps) => {
       closable={false}
       onOk={props.handleRestart}
       cancelButtonProps={{ style: { display: "none" } }}
-      okText="თავიდან დაწყება"
+      okText={t("restart")}
     >
       <div className="text-center py-4">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">გამოცდა ჩაიჭრა</h1>
-        <p className="mb-2">თქვენ დაუშვით {props.mistake} შეცდომა.</p>
-        <p className="mb-4">სცადეთ თავიდან.</p>
+        <h1 className="text-2xl font-bold text-red-600 mb-4">{t("examFailed")}</h1>
+        <p className="mb-2">{t("mistakeCount", { count: props.mistake })}</p>
+        <p className="mb-4">{t("tryAgain")}</p>
       </div>
     </Modal>
   );

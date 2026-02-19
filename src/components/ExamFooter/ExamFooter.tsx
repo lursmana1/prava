@@ -10,6 +10,7 @@ type ExamFooterProps = {
   showPrevious?: () => void;
   showNext?: () => void;
   selectAnswer: (key: string) => void;
+  selectedAnswer?: string;
 };
 
 const ExamFooter = (props: ExamFooterProps) => {
@@ -27,25 +28,30 @@ const ExamFooter = (props: ExamFooterProps) => {
 
       {/* Question Numbers */}
       <div className="flex gap-2 overflow-x-auto justify-center flex-1">
-        {props.questions.map((question) => (
-          <div
-            key={question.key}
-            onClick={() => props.selectAnswer(question.key)}
-            className="
+        {props.questions.map((question) => {
+          const disabled = !!props.selectedAnswer;
+          return (
+            <div
+              key={question.key}
+              onClick={() => !disabled && props.selectAnswer(question.key)}
+              className={`
                 flex items-center justify-center
-                bg-gray-100 text-black
                 border border-gray-400
                 w-12 h-12
                 rounded-md
                 font-bold text-lg
-                cursor-pointer
-                hover:bg-gray-200
                 transition
-              "
-          >
-            {question.key}
-          </div>
-        ))}
+                ${
+                  disabled
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
+                    : "bg-gray-100 text-black cursor-pointer hover:bg-gray-200"
+                }
+              `}
+            >
+              {question.key}
+            </div>
+          );
+        })}
       </div>
 
       {navigationVisibility && (

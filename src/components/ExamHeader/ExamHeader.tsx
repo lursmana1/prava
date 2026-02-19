@@ -1,8 +1,8 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { ReactNode } from "react";
 
 type ExamHeaderProps = {
-  timeLabel: ReactNode; // ✅ was string
+  timeLabel: ReactNode;
   currentQuestion: number;
   totalQuestions: number;
   correct: number;

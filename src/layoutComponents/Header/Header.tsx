@@ -1,6 +1,12 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import LocaleSwitcher from "@/components/LocaleSwitcher/LocaleSwitcher";
 
 const Header = () => {
+  const t = useTranslations("Header");
+
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 bg-amber-50/90 backdrop-blur">
       <div className="section flex h-16 items-center justify-between">
@@ -35,7 +41,7 @@ const Header = () => {
                 href="tel:+995568785378"
                 className="rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
-                კონტაქტი: 568 785 378
+                {t("contact")}
               </a>
             </li>
             <li>
@@ -43,7 +49,7 @@ const Header = () => {
                 href="/subjectpicker"
                 className="rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
-                გამოცდა (საკითხების არჩევა)
+                {t("exam")}
               </Link>
             </li>
             <li>
@@ -51,7 +57,7 @@ const Header = () => {
                 href="/tickets"
                 className="rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
-                ბილეთები
+                {t("tickets")}
               </Link>
             </li>
             <li>
@@ -59,8 +65,11 @@ const Header = () => {
                 href="/exam"
                 className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-amber-50 hover:opacity-90"
               >
-                სწრაფი ტესტი
+                {t("quickTest")}
               </Link>
+            </li>
+            <li>
+              <LocaleSwitcher />
             </li>
           </ul>
         </nav>
@@ -73,7 +82,7 @@ const Header = () => {
                 href="tel:+995568785378"
                 className="block rounded-md px-3 py-3 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
-                კონტაქტი: 568 785 378
+                {t("contact")}
               </a>
             </li>
             <li>
@@ -81,7 +90,7 @@ const Header = () => {
                 href="/subjectpicker"
                 className="block rounded-md px-3 py-3 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
-                გამოცდა (საკითხების არჩევა)
+                {t("exam")}
               </Link>
             </li>
             <li>
@@ -89,7 +98,7 @@ const Header = () => {
                 href="/tickets"
                 className="block rounded-md px-3 py-3 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
-                ბილეთები
+                {t("tickets")}
               </Link>
             </li>
             <li>
@@ -97,8 +106,11 @@ const Header = () => {
                 href="/exam"
                 className="block rounded-md bg-black px-3 py-3 text-sm font-semibold text-amber-50 hover:opacity-90"
               >
-                სწრაფი ტესტი
+                {t("quickTest")}
               </Link>
+            </li>
+            <li className="px-3 py-2">
+              <LocaleSwitcher />
             </li>
           </ul>
         </nav>

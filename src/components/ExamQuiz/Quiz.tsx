@@ -142,6 +142,7 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
         showPrevious={nav.prev}
         showNext={nav.next}
         selectAnswer={handleSelect}
+        selectedAnswer={selectedAnswer || undefined}
       />
 
       {examFailed && (

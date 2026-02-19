@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { Button, Checkbox, Divider, Row, Col } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { Subject } from "@/lib/types/subject";
+import { useTranslations } from "next-intl";
 
 type SubjectPickerProps = {
   categoryId: number;
@@ -16,6 +17,7 @@ export default function SubjectPicker({
   subjects,
 }: SubjectPickerProps) {
   const router = useRouter();
+  const t = useTranslations("SubjectPicker");
 
   const allIds = useMemo(() => subjects.map((s) => s.id), [subjects]);
   const [selected, setSelected] = useState<number[]>(allIds);
@@ -52,7 +54,6 @@ export default function SubjectPicker({
 
   return (
     <div className="max-w-6xl mx-auto p-4 font-georgian!">
-
       <Divider className="my-4" />
 
       <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -61,7 +62,7 @@ export default function SubjectPicker({
           checked={allChecked}
           onChange={toggleAll}
         >
-          ყველას მონიშვნა / მოხსნა
+          {t("toggleAll")}
         </Checkbox>
 
         <Button
@@ -70,7 +71,7 @@ export default function SubjectPicker({
           disabled={!selected.length}
           onClick={startExam}
         >
-          გამოცდის დაწყება ({selected.length})
+          {t("startExam", { count: selected.length })}
         </Button>
       </div>
 

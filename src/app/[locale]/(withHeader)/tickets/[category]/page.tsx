@@ -1,13 +1,13 @@
 import BaseApi from "@/api/BaseApi";
 import TicketsPagination from "@/components/antComponents/AntPagination/TicketPagination";
 import CategoryCard from "@/components/categoryComponents/CategoryCard/CategoryCard";
-import TicketQuiz from "@/components/TicketsQuiz/TicketsQuiz";
+import TicketsQuizList from "@/components/TicketsQuiz/TicketsQuizList";
 import { Category } from "@/lib/types/category";
-import { type ExamQuestion, type QuestionsResponse } from "@/lib/types/exam";
+import { type QuestionsResponse } from "@/lib/types/exam";
 import SubjectAsideMenu from "@/components/SubjectAsideMenu/SubjectAsideMenu";
 
 type PageProps = {
-  params: Promise<{ category: string }>;
+  params: Promise<{ locale: string; category: string }>;
   searchParams?: Promise<{ page?: string; size?: string; subjects?: string }>;
 };
 
@@ -15,7 +15,7 @@ export default async function TicketsCategoryPage({
   params,
   searchParams,
 }: PageProps) {
-  const { category } = await params;
+  const { locale, category } = await params;
   const sp = searchParams ? await searchParams : {};
 
   const categoryId = Number(category);
@@ -27,16 +27,21 @@ export default async function TicketsCategoryPage({
     await Promise.all([
       BaseApi.get("/categories").then((r) => r.data),
       BaseApi.get("/questions", {
-        params: { category: categoryId, subjects, page, size },
+        params: { category: categoryId, subjects, page, size, lang: locale },
       }).then((r) => r.data),
     ]);
+  console.log(questionsRes, "zd");
 
   return (
     <div className="section space-y-6">
       {/* Top categories row (full width) */}
       <div className="flex gap-4 flex-wrap">
         {categories.map((c) => (
-          <CategoryCard key={c.id} category={c} isActive={c.id === categoryId} />
+          <CategoryCard
+            key={c.id}
+            category={c}
+            isActive={c.id === categoryId}
+          />
         ))}
       </div>
 
@@ -55,11 +60,7 @@ export default async function TicketsCategoryPage({
             />
           </div>
 
-          <div className="space-y-3">
-            {questionsRes.items.map((q) => (
-              <TicketQuiz key={q.id} question={q} />
-            ))}
-          </div>
+          <TicketsQuizList questions={questionsRes.items} />
 
           <div className="flex justify-end">
             <TicketsPagination
