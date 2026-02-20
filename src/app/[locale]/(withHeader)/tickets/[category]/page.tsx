@@ -30,7 +30,6 @@ export default async function TicketsCategoryPage({
         params: { category: categoryId, subjects, page, size, lang: locale },
       }).then((r) => r.data),
     ]);
-  console.log(questionsRes, "zd");
 
   return (
     <div className="section space-y-6">

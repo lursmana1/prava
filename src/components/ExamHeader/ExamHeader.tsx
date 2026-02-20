@@ -11,7 +11,7 @@ type ExamHeaderProps = {
 };
 
 const cellBase =
-  "flex-1 min-w-0 flex items-center justify-center px-4 py-2 border border-slate-600/80 bg-slate-900/60";
+  "flex-1 min-w-0 flex items-center justify-center px-2 sm:px-4 py-1.5 sm:py-2 border border-slate-600/80 bg-slate-900/60 text-xs sm:text-sm font-semibold truncate";
 
 const ExamHeader = ({
   timeLabel,
@@ -22,8 +22,8 @@ const ExamHeader = ({
   questionId,
 }: ExamHeaderProps) => {
   return (
-    <div className="w-full flex justify-center mb-4">
-      <div className="flex w-full rounded-xl border border-slate-600/70 bg-slate-900/80 overflow-hidden text-sm font-semibold tracking-wide">
+    <div className="w-full min-w-0 flex justify-center mb-3 sm:mb-4">
+      <div className="flex w-full min-w-0 rounded-lg sm:rounded-xl border border-slate-600/70 bg-slate-900/80 overflow-hidden">
         <div className={cellBase}>{timeLabel}</div>
 
         <div className={cellBase}>

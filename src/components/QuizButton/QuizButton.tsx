@@ -18,7 +18,7 @@ const QuizButton = ({
   const isThisCorrect = answerKey === correctAnswer;
 
   const base =
-    "w-full text-left font-georgian text-white flex items-center gap-4 rounded border transition p-4 leading-snug";
+    "w-full min-w-0 text-left font-georgian text-white flex items-center gap-2 sm:gap-4 rounded border transition p-3 sm:p-4 leading-snug";
 
   const stateClass = hasSelected
     ? isThisCorrect
@@ -36,12 +36,14 @@ const QuizButton = ({
       className={`${base} ${stateClass}`}
     >
       {/* Key badge */}
-      <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gray-200 text-black font-semibold text-lg shrink-0">
+      <div className="w-9 h-9 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg bg-gray-200 text-black font-semibold text-base sm:text-lg shrink-0">
         {answerKey}
       </div>
 
       {/* Text */}
-      <div className="break-words">{answerText}</div>
+      <div className="wrap-break-word min-w-0 overflow-hidden">
+        {answerText}
+      </div>
     </button>
   );
 };
