@@ -38,7 +38,7 @@ export default async function ExamPage({
   }).then((r) => r.data);
 
   return (
-    <div className="bg-[#193e4a] min-h-screen flex flex-col">
+    <div className="bg-[#193e4a] min-h-dvh flex flex-col">
       <div className="section flex-1 min-h-0 flex flex-col">
         <ExamQuiz questions={questions} />
       </div>
