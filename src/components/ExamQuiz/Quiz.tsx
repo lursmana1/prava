@@ -72,12 +72,11 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   if (!safeQuestions.length || !q) return null;
 
   return (
-    <>
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#193e4a]">
       <div
-        className="p-4 h-[90vh] overflow-auto overflow-x-hidden exam-scroll"
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-3 sm:p-4"
         style={{
           backgroundImage: "url('/png/download.png')",
-          backgroundColor: "#193e4a",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "contain",
@@ -108,21 +107,23 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
           }
         >
           {!!q.hasImg && (
-            <Image
-              src={"/" + q.img}
-              alt={q.question || ""}
-              className="m-auto h-auto max-h-110"
-              width={1000}
-              height={410}
-              priority
-            />
+            <div className="w-full min-w-0 mb-3">
+              <Image
+                src={"/" + q.img}
+                alt={q.question || ""}
+                className="m-auto h-auto w-full max-h-44 sm:max-h-72 lg:max-h-[280px] object-contain"
+                width={1000}
+                height={410}
+                priority
+              />
+            </div>
           )}
 
-          <p className="font-georgian p-4 text-white text-sm border border-white bg-black/50 rounded-md mb-4">
+          <p className="font-georgian p-3 sm:p-4 text-white text-sm border border-white bg-black/50 rounded-md mb-3 sm:mb-4 wrap-break-word min-w-0">
             {q.question}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 auto-rows-fr items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0">
             {answers.map((a) => (
               <QuizButton
                 key={a.key}
@@ -137,13 +138,15 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
         </div>
       </div>
 
-      <ExamFooter
-        questions={answers}
-        showPrevious={nav.prev}
-        showNext={nav.next}
-        selectAnswer={handleSelect}
-        selectedAnswer={selectedAnswer || undefined}
-      />
+      <div className="shrink-0">
+        <ExamFooter
+          questions={answers}
+          showPrevious={nav.prev}
+          showNext={nav.next}
+          selectAnswer={handleSelect}
+          selectedAnswer={selectedAnswer || undefined}
+        />
+      </div>
 
       {examFailed && (
         <ExamRetryModal handleRestart={handleRestart} mistake={mistake} />
@@ -152,6 +155,6 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
       {examSuccess && examFinished && (
         <ExamSuccessModal handleRestart={handleRestart} mistake={mistake} />
       )}
-    </>
+    </div>
   );
 }

@@ -27,11 +27,10 @@ export default async function ExamPage({
   }
 
   const category = categoryRaw ? Number(categoryRaw) : 1;
-  console.log(locale, "zd");
-
+  const subjectsString = subjects.join(",");
   const questions = await BaseApi.get("/questions/random", {
     params: {
-      subjects: subjects.join(","),
+      subjects: subjectsString,
       category: category,
       count: 30,
       lang: locale,
@@ -39,8 +38,8 @@ export default async function ExamPage({
   }).then((r) => r.data);
 
   return (
-    <div className="bg-[#193e4a]">
-      <div className="section">
+    <div className="bg-[#193e4a] min-h-screen flex flex-col">
+      <div className="section flex-1 min-h-0 flex flex-col">
         <ExamQuiz questions={questions} />
       </div>
     </div>
