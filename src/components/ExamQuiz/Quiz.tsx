@@ -16,6 +16,7 @@ import {
 } from "@/CONSTS/QuizExamConstats";
 import { getAnswers } from "@/utills/helpers/getAnswers";
 import useArrowNavigation from "@/utills/helpers/hooks/useArrowNavigation";
+import useAnswerKeyboard from "@/utills/helpers/hooks/useAnswerKeyboard";
 import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
 import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
 
@@ -68,6 +69,8 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
     },
     [qId, examFinished, examFailed],
   );
+
+  useAnswerKeyboard(examFinished || examFailed || !!selectedAnswer, answers, handleSelect);
 
   if (!safeQuestions.length || !q) return null;
 
