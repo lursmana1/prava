@@ -37,6 +37,11 @@ const Header = () => {
         <nav className="hidden md:block">
           <ul className="flex items-center gap-2">
             <li>
+              <Link href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
+                google login
+              </Link>
+            </li>
+            <li>
               <a
                 href="tel:+995568785378"
                 className="rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
