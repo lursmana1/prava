@@ -1,167 +1,21 @@
-"use client";
+import HeaderLogo from "./HeaderLogo";
+import HeaderNav from "./HeaderNav";
+import HeaderAuth from "./HeaderAuth";
+import BurgerMenu from "./BurgerMenu";
 
-import { Link } from "@/i18n/navigation";
-import LocaleSwitcher from "@/components/LocaleSwitcher/LocaleSwitcher";
-import { navLinks } from "@/CONSTS/navLinks";
-import { useState, useEffect } from "react";
-
-const navLinkClass =
-  "rounded-md px-3 py-2.5 text-base font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors";
-
-const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-
-  const closeMenu = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setMenuOpen(false);
-      setIsClosing(false);
-    }, 200);
-  };
-
-  const openMenu = () => setMenuOpen(true);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
-    };
-    if (menuOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
-
+export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="section flex h-12 items-center justify-between gap-2 sm:h-14 md:h-16">
-        {/* Left: Logo + Desktop Nav */}
         <div className="flex min-w-0 flex-1 items-center gap-1 sm:gap-2">
-          <Link
-            href="/"
-            className="flex shrink-0 items-center gap-1.5 text-sm font-bold text-blue-600 hover:opacity-80 sm:text-base md:gap-2 md:text-lg"
-          >
-            <div className="h-6 w-6 shrink-0 rounded-lg bg-blue-600 sm:h-7 sm:w-7 md:h-8 md:w-8" />
-            <span className="hidden sm:inline">prava.ge</span>
-          </Link>
-          <nav
-            aria-label="Main navigation"
-            className="ml-0.5 hidden flex-nowrap items-center gap-0.5 md:ml-2 md:flex md:gap-1"
-          >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="shrink-0 rounded-md px-1.5 py-1.5 text-[11px] font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 sm:px-2 sm:text-xs md:px-3 md:py-2 md:text-sm"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <HeaderLogo />
+          <HeaderNav />
         </div>
-
-        {/* Right: Auth + CTA + Locale (desktop only) */}
-        <div className="hidden shrink-0 items-center gap-1 md:flex md:gap-2">
-          <Link
-            href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}
-            className="shrink-0 rounded-md px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 sm:px-3 sm:py-2 sm:text-sm"
-          >
-            შესვლა
-          </Link>
-          <Link
-            href="/exam"
-            className="shrink-0 rounded-xl bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 sm:px-4 sm:py-2 sm:text-sm"
-          >
-            დაიწყე უფასო სიმულაცია
-          </Link>
-          <LocaleSwitcher />
+        <div className="flex shrink-0 items-center gap-2">
+          <HeaderAuth />
+          <BurgerMenu />
         </div>
-
-        {/* Burger button (mobile only) */}
-        <button
-          type="button"
-          onClick={() => (menuOpen ? closeMenu() : openMenu())}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5 rounded-lg transition-colors hover:bg-slate-100 md:hidden"
-        >
-          <span
-            className={`block h-0.5 w-6 rounded-full bg-slate-700 transition-all duration-200 ${
-              menuOpen ? "translate-y-2 rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-6 rounded-full bg-slate-700 transition-all duration-200 ${
-              menuOpen ? "opacity-0 scale-0" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-6 rounded-full bg-slate-700 transition-all duration-200 ${
-              menuOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          />
-        </button>
       </div>
-
-      {/* Mobile menu overlay + panel */}
-      {menuOpen && (
-        <>
-          <div
-            className={`fixed inset-0 top-12 sm:top-14 z-40 bg-slate-900/20 backdrop-blur-sm transition-opacity duration-200 md:hidden ${
-              isClosing ? "opacity-0" : "opacity-100"
-            }`}
-            aria-hidden
-            onClick={closeMenu}
-          />
-          <nav
-            id="mobile-menu"
-            role="navigation"
-            aria-label="Mobile navigation"
-            className={`fixed left-0 right-0 top-12 sm:top-14 z-50 border-b border-slate-200 bg-white shadow-lg md:hidden ${
-              isClosing ? "burger-menu-exit" : "burger-menu-enter"
-            }`}
-          >
-            <div className="section flex flex-col gap-1 py-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMenu}
-                  className={navLinkClass}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="my-2 border-t border-slate-200 pt-4">
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}
-                  onClick={closeMenu}
-                  className={navLinkClass}
-                >
-                  შესვლა
-                </Link>
-                <Link
-                  href="/exam"
-                  onClick={closeMenu}
-                  className="mt-2 flex items-center justify-center rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"
-                >
-                  დაიწყე უფასო სიმულაცია
-                </Link>
-                <div className="mt-3">
-                  <LocaleSwitcher />
-                </div>
-              </div>
-            </div>
-          </nav>
-        </>
-      )}
     </header>
   );
-};
-
-export default Header;
+}
