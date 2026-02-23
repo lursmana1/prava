@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { ExamQuestion } from "@/lib/types/exam";
 import Image from "next/image";
 import QuizButton from "../QuizButton/QuizButton";
@@ -21,6 +22,7 @@ import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
 import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
 
 export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
+  const router = useRouter();
   const safeQuestions = useMemo(
     () => (Array.isArray(questions) ? questions : []),
     [questions],
@@ -28,7 +30,6 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
 
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [timerRestartKey, setTimerRestartKey] = useState(0);
-
   const [answersById, setAnswersById] = useState<Record<string, string>>({});
 
   const { score, mistake, totalAnswered } = useExamProgress(
@@ -57,7 +58,8 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
     setAnswersById({});
     setIsTimeUp(false);
     setTimerRestartKey((k) => k + 1);
-  }, [nav.reset]);
+    router.refresh();
+  }, [nav.reset, router]);
 
   const handleSelect = useCallback(
     (key: string) => {

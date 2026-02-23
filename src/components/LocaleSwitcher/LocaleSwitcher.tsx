@@ -6,10 +6,7 @@ import { routing } from "@/i18n/routing";
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 
-const localeConfig: Record<
-  string,
-  { label: string; flag: string }
-> = {
+const localeConfig: Record<string, { label: string; flag: string }> = {
   ka: { label: "ქართული", flag: "/languages/flag-ge.svg" },
   en: { label: "English", flag: "/languages/flag-en.svg" },
   ru: { label: "Русский", flag: "/languages/flag-ru.svg" },

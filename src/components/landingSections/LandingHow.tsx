@@ -30,7 +30,7 @@ export default async function LandingHow() {
     <>
       {/* Section 1: How it works - full width, dark blue */}
       <section
-        className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 px-6 py-16 md:px-8 md:py-20"
+        className="bg-linear-to-br from-blue-900 via-blue-800 to-blue-900 px-6 py-16 md:px-8 md:py-20"
         aria-labelledby="how-title"
       >
         <div className="section">
@@ -63,11 +63,11 @@ export default async function LandingHow() {
         <div className="section">
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Left: Leaderboard */}
-            <aside
+            <section
               className="rounded-2xl border border-slate-200 bg-white p-6 shadow-md"
-              aria-label={t("leaderboardTitle")}
+              aria-labelledby="leaderboard-heading"
             >
-              <h3 className="font-semibold text-slate-900">{t("leaderboardTitle")}</h3>
+              <h3 id="leaderboard-heading" className="font-semibold text-slate-900">{t("leaderboardTitle")}</h3>
               <div className="mt-4 overflow-hidden rounded-lg">
                 <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-slate-200 bg-slate-50 p-3 text-sm font-medium text-slate-600">
                   <span>{t("leaderboardColumnUser")}</span>
@@ -98,11 +98,11 @@ export default async function LandingHow() {
               >
                 {t("leaderboardFull")}
               </Link>
-            </aside>
+            </section>
 
             {/* Right: Statistics + Testimonial */}
             <div className="flex flex-col gap-6">
-              <div className="grid grid-cols-2 gap-4">
+              <section aria-label={t("statsSectionLabel")} className="grid grid-cols-2 gap-4">
                 {stats.map((stat) => (
                   <div
                     key={stat.val}
@@ -114,7 +114,7 @@ export default async function LandingHow() {
                     <span className="mt-1 block text-sm text-slate-500">{stat.val}</span>
                   </div>
                 ))}
-              </div>
+              </section>
               <blockquote className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-md">
                 <span
                   className="absolute -left-2 -top-2 text-8xl font-serif text-blue-200/60"

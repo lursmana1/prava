@@ -36,6 +36,7 @@
     "step2Text": "The system offers individual questions from topics where you make the most mistakes.",
     "step3Title": "90%+ readiness",
     "step3Text": "When your readiness score exceeds 90%, you're ready for the real exam.",
+    "statsSectionLabel": "Statistics",
     "leaderboardTitle": "Leaderboard",
     "leaderboardFull": "View full list",
     "stat1Key": "50k+",
@@ -83,6 +84,7 @@
     "startExam": "Start Exam ({count})"
   },
   "Exam": {
+    "loading": "Loading...",
     "restart": "Start Over",
     "examFailed": "Exam Failed",
     "mistakeCount": "You made {count} mistakes.",
