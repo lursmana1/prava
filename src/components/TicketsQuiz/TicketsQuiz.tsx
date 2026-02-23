@@ -24,7 +24,7 @@ export default function TicketQuiz({
 
   return (
     <>
-      <div className="p-4 h-auto bg-[#193e4a] bg-[url('/png/download.png')] bg-no-repeat bg-center bg-contain">
+      <div className="p-4 h-auto bg-[#193e4a] bg-[url('/png/download.png')] bg-no-repeat bg-center bg-contain scroll-mt-4">
         <div>
           {!!question.hasImg && (
             <Image
@@ -56,7 +56,11 @@ export default function TicketQuiz({
         </div>
       </div>
 
-      <ExamFooter questions={answers} selectAnswer={handleSelect} selectedAnswer={selectedAnswer || undefined} />
+      <ExamFooter
+        questions={answers}
+        selectAnswer={handleSelect}
+        selectedAnswer={selectedAnswer || undefined}
+      />
     </>
   );
 }

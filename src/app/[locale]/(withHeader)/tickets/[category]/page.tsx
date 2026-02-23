@@ -2,13 +2,20 @@ import BaseApi from "@/api/BaseApi";
 import TicketsPagination from "@/components/antComponents/AntPagination/TicketPagination";
 import CategoryCardsGrid from "@/components/categoryComponents/CategoryCardsGrid/CategoryCardsGrid";
 import TicketsQuizList from "@/components/TicketsQuiz/TicketsQuizList";
+import QuestionIdSearch from "@/components/QuestionIdSearch/QuestionIdSearch";
 import { Category } from "@/lib/types/category";
 import { type QuestionsResponse } from "@/lib/types/exam";
 import SubjectAsideMenu from "@/components/SubjectAsideMenu/SubjectAsideMenu";
+import { Suspense } from "react";
 
 type PageProps = {
   params: Promise<{ locale: string; category: string }>;
-  searchParams?: Promise<{ page?: string; size?: string; subjects?: string }>;
+  searchParams?: Promise<{
+    page?: string;
+    size?: string;
+    subjects?: string;
+    questionId?: string;
+  }>;
 };
 
 export default async function TicketsCategoryPage({
@@ -22,14 +29,34 @@ export default async function TicketsCategoryPage({
   const page = Number(sp.page ?? "1");
   const size = Number(sp.size ?? "20");
   const subjects = sp.subjects ?? "";
+  const questionId = sp.questionId ?? "";
 
   const [categories, questionsRes]: [Category[], QuestionsResponse] =
     await Promise.all([
       BaseApi.get("/categories").then((r) => r.data),
-      BaseApi.get("/questions", {
-        params: { category: categoryId, subjects, page, size, lang: locale },
+      BaseApi.get(`/questions/${questionId ? questionId : ""}`, {
+        params: {
+          category: categoryId,
+          subjects,
+          page,
+          size,
+          lang: locale,
+        },
       }).then((r) => r.data),
     ]);
+
+  const rawItems = questionsRes?.items ?? questionsRes;
+  const questions = Array.isArray(rawItems)
+    ? rawItems
+    : rawItems
+      ? [rawItems]
+      : [];
+
+  const pagination = {
+    page: questionsRes?.page ?? 1,
+    size: questionsRes?.size ?? 20,
+    total: questionsRes?.total ?? questions.length,
+  };
 
   return (
     <div className="section space-y-6">
@@ -46,21 +73,28 @@ export default async function TicketsCategoryPage({
 
         {/* RIGHT - main content */}
         <main className="space-y-6 order-1 lg:order-2">
+          <Suspense
+            fallback={
+              <div className="h-10 w-48 bg-gray-200 rounded animate-pulse" />
+            }
+          >
+            <QuestionIdSearch category={category} currentParams={sp} />
+          </Suspense>
           <div className="flex justify-end">
             <TicketsPagination
-              page={questionsRes.page}
-              size={questionsRes.size}
-              total={questionsRes.total}
+              page={pagination.page}
+              size={pagination.size}
+              total={pagination.total}
             />
           </div>
 
-          <TicketsQuizList questions={questionsRes.items} />
+          <TicketsQuizList questions={questions} />
 
           <div className="flex justify-end">
             <TicketsPagination
-              page={questionsRes.page}
-              size={questionsRes.size}
-              total={questionsRes.total}
+              page={pagination.page}
+              size={pagination.size}
+              total={pagination.total}
             />
           </div>
         </main>
