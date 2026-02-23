@@ -84,3 +84,20 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #6b7280; /* gray-500 */
 }
+
+/* FAQ accordion animations */
+@keyframes faqContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.landing-faq__item[open] .landing-faq__content {
+  animation: faqContentIn 0.25s ease-out;
+}
+
