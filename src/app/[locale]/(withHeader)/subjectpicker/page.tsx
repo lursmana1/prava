@@ -18,7 +18,7 @@ const SubjectPickerPage = async ({ searchParams }: PageProps) => {
 
   const categoryId = sp.category
     ? Number(sp.category)
-    : (categories[0]?.id ?? 0);
+    : (categories[1]?.id ?? 1);
 
   const categoryWithSubjects: CategoryWithSubjects = await BaseApi.get(
     `/categories/${categoryId}`,
