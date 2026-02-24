@@ -85,6 +85,8 @@
   },
   "Exam": {
     "loading": "იტვირთება...",
+    "loadingNewQuestions": "ახალი კითხვების ჩატვირთვა...",
+    "autoAdvance": "ავტომატურად შემდეგზე",
     "restart": "თავიდან დაწყება",
     "examFailed": "გამოცდა ჩაიჭრა",
     "mistakeCount": "თქვენ დაუშვით {count} შეცდომა.",
