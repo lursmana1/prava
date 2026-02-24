@@ -7,12 +7,11 @@ import BaseApi from "@/api/BaseApi";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
-const googleAuthUrl = "/auth/google";
+const googleAuthUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`;
 
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const t = useTranslations("Auth");
-  const router = useRouter();
 
   // es gadawyobia global stateshi unda inaxebodes
   // useEffect(() => {
