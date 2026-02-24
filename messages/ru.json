@@ -85,6 +85,8 @@
   },
   "Exam": {
     "loading": "Загрузка...",
+    "loadingNewQuestions": "Загрузка новых вопросов...",
+    "autoAdvance": "Авто-переход к следующему",
     "restart": "Начать заново",
     "examFailed": "Экзамен не сдан",
     "mistakeCount": "Вы допустили {count} ошибок.",

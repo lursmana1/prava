@@ -85,6 +85,8 @@
   },
   "Exam": {
     "loading": "Loading...",
+    "loadingNewQuestions": "Loading new questions...",
+    "autoAdvance": "Auto advance to next",
     "restart": "Start Over",
     "examFailed": "Exam Failed",
     "mistakeCount": "You made {count} mistakes.",

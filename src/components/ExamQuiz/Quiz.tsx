@@ -1,146 +1,84 @@
 "use client";
-import { useCallback, useMemo, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import type { ExamQuestion } from "@/lib/types/exam";
+
 import Image from "next/image";
-import QuizButton from "../QuizButton/QuizButton";
-import ExamHeader from "../ExamHeader/ExamHeader";
-import ExamRetryModal from "../Modals/ExamRetryModal.tsx/ExamRetryModal";
-import ExamFooter from "../ExamFooter/ExamFooter";
-import ExamSuccessModal from "../Modals/ExamSucessModal/ExamSucessModal";
-import ExamRestartOverlay from "./ExamRestartOverlay";
-import ExamCountDown from "../ExamCountDown/ExamCountDown";
+import type { ExamQuestion } from "@/lib/types/exam";
 import {
   EXAM_TOTAL_QUESTIONS,
-  MAX_MISTAKES,
-  PASS_SCORE,
   EXAM_DURATION_SECONDS,
+  PASS_SCORE,
 } from "@/CONSTS/QuizExamConstats";
-import { getAnswers } from "@/utills/helpers/getAnswers";
-import useArrowNavigation from "@/utills/helpers/hooks/useArrowNavigation";
-import useAnswerKeyboard from "@/utills/helpers/hooks/useAnswerKeyboard";
-import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
-import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
+import { useExamQuiz } from "@/utills/helpers/hooks/exam";
+
+import ExamCountDown from "../ExamCountDown/ExamCountDown";
+import ExamFooter from "../ExamFooter/ExamFooter";
+import ExamHeader from "../ExamHeader/ExamHeader";
+import ExamRetryModal from "../Modals/ExamRetryModal.tsx/ExamRetryModal";
+import ExamSuccessModal from "../Modals/ExamSucessModal/ExamSucessModal";
+import QuizButton from "../QuizButton/QuizButton";
+import ExamAnswerButtons from "./ExamAnswerButtons";
+import ExamAutoAdvanceCheckbox from "./ExamAutoAdvanceCheckbox";
+import ExamQuestionContent from "./ExamQuestionContent";
+import ExamRestartOverlay from "./ExamRestartOverlay";
 
 export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
-  const router = useRouter();
-  const safeQuestions = useMemo(
-    () => (Array.isArray(questions) ? questions : []),
-    [questions],
-  );
+  const exam = useExamQuiz(questions);
 
-  const [isTimeUp, setIsTimeUp] = useState(false);
-  const [timerRestartKey, setTimerRestartKey] = useState(0);
-  const [answersById, setAnswersById] = useState<Record<string, string>>({});
-  const [isPending, startTransition] = useTransition();
+  if (!exam.safeQuestions.length || !exam.q) return null;
 
-  const { score, mistake, totalAnswered } = useExamProgress(
-    safeQuestions,
-    answersById,
-  );
-
-  const examFinished = totalAnswered >= EXAM_TOTAL_QUESTIONS || isTimeUp;
-  const examFailed = mistake > MAX_MISTAKES;
-  const examSuccess = score >= PASS_SCORE;
-
-  const nav = useQuestionNavigation(
-    safeQuestions.length,
-    examFinished || examFailed,
-  );
-
-  useArrowNavigation(nav.prev, nav.next);
-
-  const q = safeQuestions[nav.index];
-  const qId = q ? String(q.id) : "";
-  const selectedAnswer = answersById[qId] ?? null;
-  const answers = q ? getAnswers(q) : [];
-
-  const handleRestart = useCallback(() => {
-    nav.reset();
-    setAnswersById({});
-    setIsTimeUp(false);
-    setTimerRestartKey((k) => k + 1);
-    startTransition(() => {
-      router.refresh();
-    });
-  }, [nav.reset, router]);
-
-  const handleSelect = useCallback(
-    (key: string) => {
-      if (examFinished || examFailed) return;
-      setAnswersById((prev) => {
-        if (prev[qId]) return prev;
-        return { ...prev, [qId]: key };
-      });
-    },
-    [qId, examFinished, examFailed],
-  );
-
-  useAnswerKeyboard(
-    examFinished || examFailed || !!selectedAnswer,
+  const {
+    q,
     answers,
-    handleSelect,
-  );
-
-  if (!safeQuestions.length || !q) return null;
+    selectedAnswer,
+    nav,
+    examFinished,
+    examFailed,
+    examEnded,
+  } = exam;
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#193e4a] relative">
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-[url('/png/download.png')] bg-contain bg-center bg-no-repeat p-3 sm:p-4">
+    <div className="relative flex flex-1 flex-col min-h-0 overflow-hidden bg-[#193e4a]">
+      <div className="shrink-0 p-3 sm:p-4">
         <ExamHeader
           timeLabel={
             <ExamCountDown
               initialSeconds={EXAM_DURATION_SECONDS}
-              paused={examFinished || examFailed}
-              restartKey={timerRestartKey}
-              onTimeUp={() => setIsTimeUp(true)}
+              paused={examEnded}
+              restartKey={exam.timerRestartKey}
+              onTimeUp={() => exam.setIsTimeUp(true)}
             />
           }
           currentQuestion={nav.index + 1}
           totalQuestions={EXAM_TOTAL_QUESTIONS}
-          correct={score}
-          mistakes={mistake}
+          correct={exam.score}
+          mistakes={exam.mistake}
           questionId={q.id}
         />
+      </div>
 
-        <div
-          key={qId}
-          className={
-            nav.direction === "next"
-              ? "animate-slide-in-next"
-              : "animate-slide-in-prev"
-          }
-        >
-          {!!q.hasImg && (
-            <div className="w-full min-w-0 mb-3">
-              <Image
-                src={"/" + q.img}
-                alt={q.question || ""}
-                className="m-auto h-auto w-full max-h-44 sm:max-h-72 lg:max-h-[280px] object-contain"
-                width={1000}
-                height={410}
-                priority
-              />
-            </div>
-          )}
+      <div
+        className={`flex flex-1 flex-col min-h-0 overflow-hidden ${exam.isSwipeEnabled ? "select-none" : ""}`}
+        style={exam.isSwipeEnabled ? { touchAction: "pan-y" } : undefined}
+        {...(exam.isSwipeEnabled ? exam.swipe.handlers : {})}
+      >
+        <ExamQuestionContent
+          question={q}
+          direction={nav.direction}
+          dragOffset={exam.swipe.dragOffset}
+          isSwipeEnabled={false}
+          swipeHandlers={{}}
+        />
 
-          <p className="font-georgian p-3 sm:p-4 text-white text-sm border border-white bg-black/50 rounded-md mb-3 sm:mb-4 wrap-break-word min-w-0">
-            {q.question}
-          </p>
+        <ExamAutoAdvanceCheckbox
+          checked={exam.autoAdvance}
+          onChange={exam.handleAutoAdvanceChange}
+        />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0">
-            {answers.map((a) => (
-              <QuizButton
-                key={a.key}
-                selectAnswer={handleSelect}
-                answerKey={a.key}
-                answerText={a.text as string}
-                selectedAnswer={selectedAnswer || ""}
-                correctAnswer={q.correct_answer}
-              />
-            ))}
-          </div>
-        </div>
+        <ExamAnswerButtons
+          answers={answers}
+          selectedAnswer={selectedAnswer}
+          correctAnswer={q.correct_answer}
+          onSelect={exam.handleSelect}
+        />
       </div>
 
       <div className="shrink-0">
@@ -148,20 +86,26 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
           questions={answers}
           showPrevious={nav.prev}
           showNext={nav.next}
-          selectAnswer={handleSelect}
+          selectAnswer={exam.handleSelect}
           selectedAnswer={selectedAnswer || undefined}
         />
       </div>
 
       {examFailed && (
-        <ExamRetryModal handleRestart={handleRestart} mistake={mistake} />
+        <ExamRetryModal
+          handleRestart={exam.handleRestart}
+          mistake={exam.mistake}
+        />
       )}
 
-      {examFinished && score >= PASS_SCORE && (
-        <ExamSuccessModal handleRestart={handleRestart} mistake={mistake} />
+      {examFinished && exam.score >= PASS_SCORE && (
+        <ExamSuccessModal
+          handleRestart={exam.handleRestart}
+          mistake={exam.mistake}
+        />
       )}
 
-      {isPending && <ExamRestartOverlay />}
+      {exam.isPending && <ExamRestartOverlay />}
     </div>
   );
 }
