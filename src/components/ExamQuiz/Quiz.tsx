@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { ExamQuestion } from "@/lib/types/exam";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import ExamHeader from "../ExamHeader/ExamHeader";
 import ExamRetryModal from "../Modals/ExamRetryModal.tsx/ExamRetryModal";
 import ExamFooter from "../ExamFooter/ExamFooter";
 import ExamSuccessModal from "../Modals/ExamSucessModal/ExamSucessModal";
+import ExamRestartOverlay from "./ExamRestartOverlay";
 import ExamCountDown from "../ExamCountDown/ExamCountDown";
 import {
   EXAM_TOTAL_QUESTIONS,
@@ -31,6 +32,7 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [timerRestartKey, setTimerRestartKey] = useState(0);
   const [answersById, setAnswersById] = useState<Record<string, string>>({});
+  const [isPending, startTransition] = useTransition();
 
   const { score, mistake, totalAnswered } = useExamProgress(
     safeQuestions,
@@ -58,7 +60,9 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
     setAnswersById({});
     setIsTimeUp(false);
     setTimerRestartKey((k) => k + 1);
-    router.refresh();
+    startTransition(() => {
+      router.refresh();
+    });
   }, [nav.reset, router]);
 
   const handleSelect = useCallback(
@@ -72,21 +76,17 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
     [qId, examFinished, examFailed],
   );
 
-  useAnswerKeyboard(examFinished || examFailed || !!selectedAnswer, answers, handleSelect);
+  useAnswerKeyboard(
+    examFinished || examFailed || !!selectedAnswer,
+    answers,
+    handleSelect,
+  );
 
   if (!safeQuestions.length || !q) return null;
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#193e4a]">
-      <div
-        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-3 sm:p-4"
-        style={{
-          backgroundImage: "url('/png/download.png')",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundSize: "contain",
-        }}
-      >
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#193e4a] relative">
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-[url('/png/download.png')] bg-contain bg-center bg-no-repeat p-3 sm:p-4">
         <ExamHeader
           timeLabel={
             <ExamCountDown
@@ -157,9 +157,11 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
         <ExamRetryModal handleRestart={handleRestart} mistake={mistake} />
       )}
 
-      {examSuccess && examFinished && (
+      {examFinished && score >= PASS_SCORE && (
         <ExamSuccessModal handleRestart={handleRestart} mistake={mistake} />
       )}
+
+      {isPending && <ExamRestartOverlay />}
     </div>
   );
 }
