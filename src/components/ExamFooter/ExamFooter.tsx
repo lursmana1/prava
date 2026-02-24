@@ -22,7 +22,13 @@ const ExamFooter = (props: ExamFooterProps) => {
           onClick={props.showPrevious}
           className="p-1.5 sm:p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer shrink-0"
         >
-          <Image src={leftSide} alt="" width={32} height={32} className="w-6 h-6 sm:w-8 sm:h-8" />
+          <Image
+            src={leftSide}
+            alt=""
+            width={32}
+            height={32}
+            className="w-6 h-6 sm:w-8 sm:h-8"
+          />
         </button>
       )}
 
@@ -31,7 +37,7 @@ const ExamFooter = (props: ExamFooterProps) => {
         {props.questions.map((question) => {
           const disabled = !!props.selectedAnswer;
           return (
-            <div
+            <button
               key={question.key}
               onClick={() => !disabled && props.selectAnswer(question.key)}
               className={`
@@ -50,7 +56,7 @@ const ExamFooter = (props: ExamFooterProps) => {
               `}
             >
               {question.key}
-            </div>
+            </button>
           );
         })}
       </div>
@@ -60,7 +66,13 @@ const ExamFooter = (props: ExamFooterProps) => {
           onClick={props.showNext}
           className="p-1.5 sm:p-2 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer shrink-0"
         >
-          <Image src={rightSide} width={32} height={32} alt="Next" className="w-6 h-6 sm:w-8 sm:h-8" />
+          <Image
+            src={rightSide}
+            width={32}
+            height={32}
+            alt="Next"
+            className="w-6 h-6 sm:w-8 sm:h-8"
+          />
         </button>
       )}
     </div>
