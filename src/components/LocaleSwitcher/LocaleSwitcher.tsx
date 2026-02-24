@@ -51,7 +51,6 @@ export default function LocaleSwitcher({
           height={16}
           className="h-4 w-4 shrink-0 rounded-sm object-cover"
         />
-        <span className="text-xs font-medium sm:text-sm">{current.label}</span>
         <svg
           className={`h-3.5 w-3.5 shrink-0 text-slate-500 transition-transform sm:h-4 sm:w-4 ${open ? "rotate-180" : ""}`}
           fill="none"
@@ -70,7 +69,7 @@ export default function LocaleSwitcher({
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 top-full z-50 mt-1.5 min-w-[140px] overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
+          className="absolute left-0 top-full z-50 mt-1.5 w-fit overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
         >
           {routing.locales.map((loc) => {
             const config = localeConfig[loc];
@@ -94,7 +93,6 @@ export default function LocaleSwitcher({
                     height={16}
                     className="h-4 w-4 shrink-0 rounded-sm object-cover"
                   />
-                  <span className="font-medium">{config.label}</span>
                   {isActive && (
                     <svg
                       className="ml-auto h-4 w-4 text-blue-600"

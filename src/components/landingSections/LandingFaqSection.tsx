@@ -12,8 +12,15 @@ export default async function LandingFaqSection() {
   }));
 
   return (
-    <section id="faq" className="section py-16 md:py-20 bg-slate-50/80" aria-labelledby="faq-title">
-      <h2 id="faq-title" className="text-center text-2xl font-bold text-slate-900 md:text-3xl">
+    <section
+      id="faq"
+      className="section p-8 bg-slate-50/80"
+      aria-labelledby="faq-title"
+    >
+      <h2
+        id="faq-title"
+        className="text-center text-2xl font-bold text-slate-900 md:text-3xl"
+      >
         {t("faqSectionTitle")}
       </h2>
       <div className="mx-auto mt-10 max-w-2xl">

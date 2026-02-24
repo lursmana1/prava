@@ -93,7 +93,7 @@ export default function BurgerMenu() {
               ))}
               <div className="my-2 border-t border-slate-200 pt-4">
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}
+                  href={`/auth`}
                   onClick={closeMenu}
                   className={navLinkClass}
                 >
