@@ -100,5 +100,26 @@
   "Tickets": {
     "subjects": "Topics",
     "subjectNumber": "Topic #{id}"
+  },
+  "Auth": {
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "register": "Register",
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "name": "Name",
+    "surname": "Surname",
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Please enter a valid email",
+    "passwordRequired": "Please enter your password",
+    "nameRequired": "Please enter your name",
+    "surnameRequired": "Please enter your surname",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsMismatch": "Passwords do not match",
+    "loading": "Loading...",
+    "continueWithGoogle": "Continue with Google",
+    "or": "or"
   }
 }

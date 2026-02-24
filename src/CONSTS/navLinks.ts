@@ -1,5 +1,5 @@
 export const navLinks = [
-  { href: "/exam", label: "სიმულაცია" },
+  { href: "/blog", label: "ბლოგი" },
   { href: "/subjectpicker", label: "თემები" },
   { href: "#", label: "ლიდერბორდი" },
   { href: "#faq", label: "FAQ" },

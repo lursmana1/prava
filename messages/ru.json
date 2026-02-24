@@ -100,5 +100,26 @@
   "Tickets": {
     "subjects": "Темы",
     "subjectNumber": "Тема #{id}"
+  },
+  "Auth": {
+    "noAccount": "Нет аккаунта?",
+    "hasAccount": "Уже есть аккаунт?",
+    "register": "Регистрация",
+    "login": "Войти",
+    "email": "Email",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "name": "Имя",
+    "surname": "Фамилия",
+    "emailRequired": "Введите email",
+    "emailInvalid": "Введите корректный email",
+    "passwordRequired": "Введите пароль",
+    "nameRequired": "Введите имя",
+    "surnameRequired": "Введите фамилию",
+    "confirmPasswordRequired": "Подтвердите пароль",
+    "passwordsMismatch": "Пароли не совпадают",
+    "loading": "Загрузка...",
+    "continueWithGoogle": "Войти через Google",
+    "or": "или"
   }
 }

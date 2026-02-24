@@ -100,5 +100,26 @@
   "Tickets": {
     "subjects": "საკითხები",
     "subjectNumber": "საკითხი #{id}"
+  },
+  "Auth": {
+    "noAccount": "არ გაქვთ ანგარიში?",
+    "hasAccount": "უკვე გაქვთ ანგარიში?",
+    "register": "რეგისტრაცია",
+    "login": "შესვლა",
+    "email": "ელფოსტა",
+    "password": "პაროლი",
+    "confirmPassword": "გაიმეორეთ პაროლი",
+    "name": "სახელი",
+    "surname": "გვარი",
+    "emailRequired": "შეიყვანეთ ელფოსტა",
+    "emailInvalid": "შეიყვანეთ სწორი ელფოსტა",
+    "passwordRequired": "შეიყვანეთ პაროლი",
+    "nameRequired": "შეიყვანეთ სახელი",
+    "surnameRequired": "შეიყვანეთ გვარი",
+    "confirmPasswordRequired": "გაიმეორეთ პაროლი",
+    "passwordsMismatch": "პაროლები არ ემთხვევა",
+    "loading": "იტვირთება...",
+    "continueWithGoogle": "გააგრძელეთ Google-ით",
+    "or": "ან"
   }
 }
