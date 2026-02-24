@@ -7,30 +7,29 @@ import BaseApi from "@/api/BaseApi";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
-const googleAuthUrl = "/api/backend/auth/google";
+const googleAuthUrl = "/auth/google";
 
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("login");
-  const [checking, setChecking] = useState(true);
   const t = useTranslations("Auth");
   const router = useRouter();
 
   // es gadawyobia global stateshi unda inaxebodes
-  useEffect(() => {
-    BaseApi.get("/auth/me")
-      .then((res) => {
-        router.replace("/");
-      })
-      .catch(() => setChecking(false));
-  }, [router]);
+  // useEffect(() => {
+  //   BaseApi.get("/auth/me")
+  //     .then((res) => {
+  //       router.replace("/");
+  //     })
+  //     .catch(() => setChecking(false));
+  // }, [router]);
 
-  if (checking) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600" />
-      </div>
-    );
-  }
+  // if (checking) {
+  //   return (
+  //     <div className="flex min-h-[60vh] items-center justify-center">
+  //       <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-md flex-col justify-center py-12">
