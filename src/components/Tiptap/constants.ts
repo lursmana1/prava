@@ -1,4 +1,5 @@
 export const FONT_SIZES = ["12px", "14px", "16px", "18px", "24px", "32px"] as const;
+export const IMAGE_ICON = "🖼";
 export const COLORS = [
   "#000000",
   "#ef4444",

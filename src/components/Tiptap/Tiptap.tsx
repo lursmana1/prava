@@ -6,7 +6,7 @@ import TiptapToolbar from "./TiptapToolbar";
 import { tiptapExtensions } from "./extensions";
 import type { TiptapProps } from "./types";
 
-export default function Tiptap({ value = "", onChange }: TiptapProps) {
+export default function Tiptap({ value = "", onChange, onImageUpload }: TiptapProps) {
   const editor = useEditor({
     extensions: tiptapExtensions,
     content: value || "<p></p>",
@@ -29,7 +29,7 @@ export default function Tiptap({ value = "", onChange }: TiptapProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-slate-300">
-      <TiptapToolbar editor={editor} />
+      <TiptapToolbar editor={editor} onImageUpload={onImageUpload} />
       <div className="tiptap-prose">
         <EditorContent editor={editor} />
       </div>
