@@ -10,7 +10,7 @@ type ToolbarBlocksProps = {
 
 export default function ToolbarBlocks({ editor, run }: ToolbarBlocksProps) {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-0.5">
       <ToolbarButton
         onClick={run((e) => e.chain().focus().toggleBulletList().run())}
         active={editor.isActive("bulletList")}
