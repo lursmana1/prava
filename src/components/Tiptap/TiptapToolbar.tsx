@@ -10,14 +10,13 @@ import ToolbarImage from "./ToolbarImage";
 
 type TiptapToolbarProps = {
   editor: Editor;
-  onImageUpload?: (file: File) => Promise<string>;
 };
 
 function ToolbarDivider() {
   return <div className="mx-1 h-6 w-px shrink-0 bg-slate-200" />;
 }
 
-export default function TiptapToolbar({ editor, onImageUpload }: TiptapToolbarProps) {
+export default function TiptapToolbar({ editor }: TiptapToolbarProps) {
   const textStyle = editor.getAttributes("textStyle");
   const run = (fn: (e: Editor) => void) => () => fn(editor);
 
@@ -30,7 +29,7 @@ export default function TiptapToolbar({ editor, onImageUpload }: TiptapToolbarPr
       <ToolbarFormat editor={editor} run={run} />
       <ToolbarDivider />
       <ToolbarLink editor={editor} />
-      <ToolbarImage editor={editor} onImageUpload={onImageUpload} />
+      <ToolbarImage editor={editor} />
       <ToolbarDivider />
       <ToolbarBlocks editor={editor} run={run} />
     </div>
