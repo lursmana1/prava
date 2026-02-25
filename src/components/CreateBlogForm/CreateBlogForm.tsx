@@ -61,17 +61,7 @@ export default function CreateBlogForm() {
         label="Content"
         rules={[{ required: true, message: "Content is required" }]}
       >
-        <Tiptap
-          onImageUpload={async (file) => {
-            const fd = new FormData();
-            fd.append("file", file);
-            const res = await BaseApi.post<{ url: string }>(
-              "/uploads/blog-image",
-              fd
-            );
-            return res.data.url;
-          }}
-        />
+        <Tiptap />
       </Form.Item>
 
       <Form.Item
