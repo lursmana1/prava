@@ -59,7 +59,7 @@ export default async function TicketsCategoryPage({
   };
 
   return (
-    <div className="section space-y-6">
+    <div className="section space-y-6 py-8">
       {/* Top categories - 2 cols mobile, 1 col desktop */}
       <CategoryCardsGrid
         categories={categories}

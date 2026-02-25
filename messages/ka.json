@@ -99,7 +99,8 @@
   },
   "Tickets": {
     "subjects": "საკითხები",
-    "subjectNumber": "საკითხი #{id}"
+    "subjectNumber": "საკითხი #{id}",
+    "ticketExplanation": "ბილეთის განმარტება"
   },
   "Auth": {
     "noAccount": "არ გაქვთ ანგარიში?",

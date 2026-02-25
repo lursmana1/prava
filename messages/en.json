@@ -99,7 +99,8 @@
   },
   "Tickets": {
     "subjects": "Topics",
-    "subjectNumber": "Topic #{id}"
+    "subjectNumber": "Topic #{id}",
+    "ticketExplanation": "Ticket explanation"
   },
   "Auth": {
     "noAccount": "Don't have an account?",

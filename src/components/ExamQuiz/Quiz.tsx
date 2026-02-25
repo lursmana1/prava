@@ -84,6 +84,7 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
       <div className="shrink-0">
         <ExamFooter
           questions={answers}
+          correctAnswer={q.correct_answer}
           showPrevious={nav.prev}
           showNext={nav.next}
           selectAnswer={exam.handleSelect}
