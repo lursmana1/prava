@@ -13,7 +13,7 @@ export default function HeaderAuth() {
         შესვლა
       </Link>
       <Link
-        href="/exam"
+        href="/subjectpicker"
         className="shrink-0 rounded-xl bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 sm:px-4 sm:py-2 sm:text-sm"
       >
         დაიწყე გამოცდა

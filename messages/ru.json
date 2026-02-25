@@ -99,7 +99,8 @@
   },
   "Tickets": {
     "subjects": "Темы",
-    "subjectNumber": "Тема #{id}"
+    "subjectNumber": "Тема #{id}",
+    "ticketExplanation": "Объяснение билета"
   },
   "Auth": {
     "noAccount": "Нет аккаунта?",

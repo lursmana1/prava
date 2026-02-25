@@ -1,17 +1,22 @@
+"use client";
+
 import type { ExamQuestion } from "@/lib/types/exam";
 import Image from "next/image";
 import QuizButton from "../QuizButton/QuizButton";
 import ExamFooter from "../ExamFooter/ExamFooter";
+import QuestionExplanation from "../QuestionExplanation/QuestionExplanation";
 import { getAnswers } from "@/utills/helpers/getAnswers";
 
 type TicketQuizProps = {
   question: ExamQuestion;
+  questionIndex?: number;
   selectedAnswer: string | null;
   onSelect: (questionId: string, key: string) => void;
 };
 
 export default function TicketQuiz({
   question,
+  questionIndex,
   selectedAnswer,
   onSelect,
 }: TicketQuizProps) {
@@ -24,7 +29,13 @@ export default function TicketQuiz({
 
   return (
     <>
-      <div className="p-4 h-auto bg-[#193e4a] bg-[url('/png/download.png')] bg-no-repeat bg-center bg-contain scroll-mt-4">
+      <div className="relative p-4 h-auto bg-[#193e4a] bg-[url('/png/download.png')] bg-no-repeat bg-center bg-contain scroll-mt-4">
+        <QuestionExplanation
+          questionId={question.id}
+          questionIndex={questionIndex}
+          explanation={question.question_explained}
+        />
+
         <div>
           {!!question.hasImg && (
             <Image

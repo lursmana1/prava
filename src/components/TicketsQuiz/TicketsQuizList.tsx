@@ -20,10 +20,11 @@ export default function TicketsQuizList({ questions }: TicketsQuizListProps) {
 
   return (
     <div className="space-y-3">
-      {questions.map((q) => (
+      {questions.map((q, index) => (
         <TicketQuiz
           key={q.id}
           question={q}
+          questionIndex={index + 1}
           selectedAnswer={answersById[String(q.id)] ?? null}
           onSelect={handleSelect}
         />

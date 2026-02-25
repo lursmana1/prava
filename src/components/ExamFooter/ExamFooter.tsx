@@ -11,6 +11,7 @@ type ExamFooterProps = {
   showNext?: () => void;
   selectAnswer: (key: string) => void;
   selectedAnswer?: string;
+  correctAnswer?: string;
 };
 
 const ExamFooter = (props: ExamFooterProps) => {
