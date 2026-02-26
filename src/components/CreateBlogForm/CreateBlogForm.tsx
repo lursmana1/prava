@@ -8,14 +8,16 @@ import BaseApi from "@/api/BaseApi";
 
 type FormValues = {
   name: string;
-  bigText: string;
+  content: string;
+  description: string;
   image?: File | null;
 };
 
 function toFormData(values: FormValues): FormData {
   const fd = new FormData();
   fd.append("name", values.name);
-  fd.append("bigText", values.bigText);
+  fd.append("content", values.content);
+  fd.append("description", values.description);
   if (values.image) fd.append("file", values.image);
   return fd;
 }
@@ -57,11 +59,18 @@ export default function CreateBlogForm() {
       </Form.Item>
 
       <Form.Item
-        name="bigText"
+        name="content"
         label="Content"
         rules={[{ required: true, message: "Content is required" }]}
       >
         <Tiptap />
+      </Form.Item>
+      <Form.Item
+        name="description"
+        label="Description"
+        rules={[{ required: true, message: "Description is required" }]}
+      >
+        <Input.TextArea rows={4} placeholder="Description" />
       </Form.Item>
 
       <Form.Item
