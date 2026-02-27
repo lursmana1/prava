@@ -18,10 +18,15 @@ import QuizButton from "../QuizButton/QuizButton";
 import ExamAnswerButtons from "./ExamAnswerButtons";
 import ExamAutoAdvanceCheckbox from "./ExamAutoAdvanceCheckbox";
 import ExamQuestionContent from "./ExamQuestionContent";
-import ExamRestartOverlay from "./ExamRestartOverlay";
 
-export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
-  const exam = useExamQuiz(questions);
+type ExamQuizProps = {
+  questions: ExamQuestion[];
+  attemptId?: number | null;
+  onRestart?: () => void;
+};
+
+export default function ExamQuiz({ questions, attemptId = null, onRestart }: ExamQuizProps) {
+  const exam = useExamQuiz(questions, attemptId, onRestart);
 
   if (!exam.safeQuestions.length || !exam.q) return null;
 
@@ -106,7 +111,6 @@ export default function ExamQuiz({ questions }: { questions: ExamQuestion[] }) {
         />
       )}
 
-      {exam.isPending && <ExamRestartOverlay />}
     </div>
   );
 }

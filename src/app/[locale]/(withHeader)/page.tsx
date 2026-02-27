@@ -5,6 +5,11 @@ import LandingFaqSection from "@/components/landingSections/LandingFaqSection";
 import LandingCta from "@/components/landingSections/LandingCta";
 import LandingFooter from "@/components/landingSections/LandingFooter";
 
+export const metadata = {
+  title: "prava.ge",
+  description: "პრავა.გე - სასწავლო პლატფორმა საქართველოში",
+};
+
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-slate-900 font-georgian">

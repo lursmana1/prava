@@ -1,5 +1,5 @@
-import BaseApi from "@/api/BaseApi";
-import ExamQuiz from "@/components/ExamQuiz/Quiz";
+import { fetchExamServerSafe } from "@/api/examAttemptsServer";
+import ExamPageClient from "@/components/ExamQuiz/ExamPageClient";
 
 type ExamPageProps = {
   params: Promise<{ locale: string }>;
@@ -9,10 +9,7 @@ type ExamPageProps = {
   }>;
 };
 
-export default async function ExamPage({
-  params,
-  searchParams,
-}: ExamPageProps) {
+export default async function ExamPage({ params, searchParams }: ExamPageProps) {
   const { locale } = await params;
   const sp = searchParams ? await searchParams : undefined;
 
@@ -27,21 +24,19 @@ export default async function ExamPage({
   }
 
   const category = categoryRaw ? Number(categoryRaw) : 1;
-  const subjectsString = subjects.join(",");
-  const questions = await BaseApi.get("/questions/random", {
-    params: {
-      subjects: subjectsString,
-      category: category,
-      count: 30,
-      lang: locale,
-    },
-  }).then((r) => r.data);
+  const subjectsStr = subjects.join(",");
+
+  const { questions, attemptId } = await fetchExamServerSafe({
+    lang: locale as "ka" | "en" | "ru",
+    subjects: subjectsStr || undefined,
+    categories: String(category),
+    count: 30,
+  });
 
   return (
-    <div className="bg-[#193e4a] min-h-dvh flex flex-col">
-      <div className="section flex-1 min-h-0 flex flex-col">
-        <ExamQuiz questions={questions} />
-      </div>
-    </div>
+    <ExamPageClient
+      questions={questions}
+      attemptId={attemptId}
+    />
   );
 }

@@ -1,20 +1,15 @@
-import { useCallback, useRef, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 type UseExamRestartOptions = {
   onReset: () => void;
+  onRestart?: () => void;
 };
 
-export function useExamRestart({ onReset }: UseExamRestartOptions) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const onResetRef = useRef(onReset);
-  onResetRef.current = onReset;
-
+export function useExamRestart({ onReset, onRestart }: UseExamRestartOptions) {
   const handleRestart = useCallback(() => {
-    onResetRef.current?.();
-    startTransition(() => router.refresh());
-  }, [router]);
+    onReset();
+    onRestart?.();
+  }, [onReset, onRestart]);
 
-  return { handleRestart, isPending };
+  return { handleRestart };
 }
