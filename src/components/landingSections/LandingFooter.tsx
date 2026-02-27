@@ -15,10 +15,10 @@ export default async function LandingFooter() {
               <span className="text-xl font-bold text-blue-600">prava.ge</span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-slate-600">{t("footerBrand")}</p>
-            <div className="mt-4 flex gap-2" aria-label="Social links">
+            {/* <div className="mt-4 flex gap-2" aria-label="Social links">
               <span className="h-8 w-8 rounded-full bg-slate-200" aria-hidden />
               <span className="h-8 w-8 rounded-full bg-slate-200" aria-hidden />
-            </div>
+            </div> */}
           </div>
 
           <nav aria-label={t("footerPlatform")}>

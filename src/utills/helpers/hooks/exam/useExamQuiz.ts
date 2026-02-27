@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ExamQuestion } from "@/lib/types/exam";
 import {
   EXAM_TOTAL_QUESTIONS,
@@ -15,8 +15,13 @@ import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
 import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
 import { useAutoAdvance } from "./useAutoAdvance";
 import { useExamRestart } from "./useExamRestart";
+import { submitAnswer } from "@/api/examAttempts";
 
-export function useExamQuiz(questions: ExamQuestion[]) {
+export function useExamQuiz(
+  questions: ExamQuestion[],
+  attemptId?: number | null,
+  onRestart?: () => void,
+) {
   const safeQuestions = useMemo(
     () => (Array.isArray(questions) ? questions : []),
     [questions],
@@ -43,6 +48,11 @@ export function useExamQuiz(questions: ExamQuestion[]) {
   const qId = q ? String(q.id) : "";
   const selectedAnswer = answersById[qId] ?? null;
   const answers = q ? getAnswers(q) : [];
+  const answeringRef = useRef(false);
+
+  useEffect(() => {
+    answeringRef.current = false;
+  }, [qId]);
 
   const onReset = useCallback(() => {
     nav.reset();
@@ -51,25 +61,33 @@ export function useExamQuiz(questions: ExamQuestion[]) {
     setTimerRestartKey((k) => k + 1);
   }, [nav.reset]);
 
-  const { handleRestart, isPending } = useExamRestart({ onReset });
+  const { handleRestart } = useExamRestart({ onReset, onRestart });
 
   const handleSelect = useCallback(
     (key: string) => {
       if (examFinished || examFailed) return;
-      const alreadyAnswered = !!selectedAnswer;
+      if (answeringRef.current || selectedAnswer) return;
+      answeringRef.current = true;
+
       setAnswersById((prev) => {
         if (prev[qId]) return prev;
         return { ...prev, [qId]: key };
       });
-      if (!alreadyAnswered && nav.index < safeQuestions.length - 1 && autoAdvance) {
+
+      if (attemptId && q) {
+        submitAnswer(attemptId, q.id, key).catch(() => {});
+      }
+
+      if (nav.index < safeQuestions.length - 1 && autoAdvance) {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
+          answeringRef.current = false;
           nav.next();
           timeoutRef.current = null;
         }, AUTO_ADVANCE_DELAY_MS);
       }
     },
-    [qId, examFinished, examFailed, selectedAnswer, nav.index, safeQuestions.length, autoAdvance],
+    [qId, examFinished, examFailed, selectedAnswer, nav.index, safeQuestions.length, autoAdvance, attemptId, q],
   );
 
   const isSwipeEnabled = useMediaQuery(MEDIA_BELOW_LG);
@@ -101,7 +119,6 @@ export function useExamQuiz(questions: ExamQuestion[]) {
     handleAutoAdvanceChange,
     isSwipeEnabled,
     swipe,
-    isPending,
     safeQuestions,
   };
 }

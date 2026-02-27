@@ -7,13 +7,18 @@ export default async function LandingCta() {
   return (
     <section className="bg-blue-600 py-16 md:py-20" aria-labelledby="cta-title">
       <div className="section text-center">
-        <h2 id="cta-title" className="text-3xl font-bold text-white md:text-4xl">
+        <h2
+          id="cta-title"
+          className="text-3xl font-bold text-white md:text-4xl"
+        >
           {t("ctaTitle")}
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-blue-100">{t("ctaText")}</p>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-white">
+          {t("ctaText")}
+        </p>
         <Link
           href="/exam"
-          className="mt-8 inline-flex h-14 items-center justify-center rounded-xl border-2 border-white bg-white px-8 font-semibold text-blue-600 transition hover:bg-blue-50"
+          className="mt-8 inline-flex h-14 items-center justify-center rounded-xl border-2 border-white bg-white px-8 font-semibold text-black transition hover:bg-blue-50"
         >
           {t("ctaBtn")}
         </Link>
