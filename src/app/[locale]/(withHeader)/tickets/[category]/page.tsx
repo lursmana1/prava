@@ -1,5 +1,6 @@
 import BaseApi from "@/api/BaseApi";
-import TicketsPagination from "@/components/antComponents/AntPagination/TicketPagination";
+import { TICKETS_PAGE_SIZE } from "@/CONSTS/pagination";
+import Pagination from "@/components/Pagination/Pagination";
 import CategoryCardsGrid from "@/components/categoryComponents/CategoryCardsGrid/CategoryCardsGrid";
 import TicketsQuizList from "@/components/TicketsQuiz/TicketsQuizList";
 import QuestionIdSearch from "@/components/QuestionIdSearch/QuestionIdSearch";
@@ -27,7 +28,7 @@ export default async function TicketsCategoryPage({
 
   const categoryId = Number(category);
   const page = Number(sp.page ?? "1");
-  const size = Number(sp.size ?? "20");
+  const size = TICKETS_PAGE_SIZE;
   const subjects = sp.subjects ?? "";
   const questionId = sp.questionId ?? "";
 
@@ -54,7 +55,6 @@ export default async function TicketsCategoryPage({
 
   const pagination = {
     page: questionsRes?.page ?? 1,
-    size: questionsRes?.size ?? 20,
     total: questionsRes?.total ?? questions.length,
   };
 
@@ -73,28 +73,30 @@ export default async function TicketsCategoryPage({
 
         {/* RIGHT - main content */}
         <main className="space-y-6 order-1 lg:order-2">
-          <Suspense
-            fallback={
-              <div className="h-10 w-48 bg-gray-200 rounded animate-pulse" />
-            }
-          >
-            <QuestionIdSearch category={category} currentParams={sp} />
-          </Suspense>
-          <div className="flex justify-end">
-            <TicketsPagination
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <Suspense
+              fallback={
+                <div className="h-10 w-48 bg-gray-200 rounded animate-pulse" />
+              }
+            >
+              <QuestionIdSearch category={category} currentParams={sp} />
+            </Suspense>
+            <Pagination
               page={pagination.page}
-              size={pagination.size}
               total={pagination.total}
+              pathname={`/tickets/${category}`}
+              pageSize={TICKETS_PAGE_SIZE}
             />
           </div>
 
           <TicketsQuizList questions={questions} />
 
-          <div className="flex justify-end">
-            <TicketsPagination
+          <div className="flex flex-wrap justify-end gap-4">
+            <Pagination
               page={pagination.page}
-              size={pagination.size}
               total={pagination.total}
+              pathname={`/tickets/${category}`}
+              pageSize={TICKETS_PAGE_SIZE}
             />
           </div>
         </main>
