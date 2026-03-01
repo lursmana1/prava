@@ -3,12 +3,14 @@
 import { Link } from "@/i18n/navigation";
 import LocaleSwitcher from "@/components/LocaleSwitcher/LocaleSwitcher";
 import { navLinks } from "@/CONSTS/navLinks";
+import { useUser } from "@/contexts/UserContext";
 import { useState, useEffect } from "react";
 
 const navLinkClass =
   "rounded-md px-3 py-2.5 text-base font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors";
 
 export default function BurgerMenu() {
+  const user = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -92,13 +94,32 @@ export default function BurgerMenu() {
                 </Link>
               ))}
               <div className="my-2 border-t border-slate-200 pt-4">
-                <Link
-                  href={`/auth`}
-                  onClick={closeMenu}
-                  className={navLinkClass}
-                >
-                  შესვლა
-                </Link>
+                {user ? (
+                  <>
+                    <Link
+                      href="/profile"
+                      onClick={closeMenu}
+                      className={navLinkClass}
+                    >
+                      {user.name || user.email}
+                    </Link>
+                    <Link
+                      href="/auth/logout"
+                      onClick={closeMenu}
+                      className={navLinkClass}
+                    >
+                      გასვლა
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    href="/auth"
+                    onClick={closeMenu}
+                    className={navLinkClass}
+                  >
+                    შესვლა
+                  </Link>
+                )}
                 <Link
                   href="/exam"
                   onClick={closeMenu}
