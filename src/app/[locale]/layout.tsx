@@ -4,6 +4,8 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { getUser } from "@/lib/auth";
+import { UserProvider } from "@/contexts/UserContext";
 import "@/app/globals.css";
 
 const geistSans = Geist({
@@ -22,8 +24,6 @@ const notoSansGeorgian = Noto_Sans_Georgian({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -31,11 +31,7 @@ export const viewport: Viewport = {
 };
 
 export function generateStaticParams() {
-  return [
-    { locale: "ka" },
-    { locale: "en" },
-    { locale: "ru" },
-  ];
+  return [{ locale: "ka" }, { locale: "en" }, { locale: "ru" }];
 }
 
 interface LocaleLayoutProps {
@@ -53,7 +49,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  const [messages, user] = await Promise.all([getMessages(), getUser()]);
 
   return (
     <html lang={locale}>
@@ -63,9 +59,11 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansGeorgian.variable} antialiased`}
       >
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <UserProvider user={user}>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </UserProvider>
       </body>
     </html>
   );

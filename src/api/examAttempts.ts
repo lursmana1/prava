@@ -19,7 +19,7 @@ export type SubmitAnswerResponse = {
 };
 
 export async function startPersonalizedExam(
-  params: StartExamParams = {}
+  params: StartExamParams = {},
 ): Promise<StartExamResponse> {
   const searchParams = new URLSearchParams();
   if (params.lang) searchParams.set("lang", params.lang);
@@ -29,7 +29,7 @@ export async function startPersonalizedExam(
   if (params.allSubjects) searchParams.set("allSubjects", params.allSubjects);
 
   const res = await BaseApi.post<StartExamResponse>(
-    `/exam-attempts/start?${searchParams.toString()}`
+    `/exam-attempts/start?${searchParams.toString()}`,
   );
   return res.data;
 }
@@ -37,12 +37,15 @@ export async function startPersonalizedExam(
 export async function submitAnswer(
   attemptId: number,
   questionId: number | string,
-  chosenAnswer: string
+  chosenAnswer: string,
 ): Promise<SubmitAnswerResponse> {
-  const qId = typeof questionId === "number" ? questionId : parseInt(String(questionId), 10);
+  const qId =
+    typeof questionId === "number"
+      ? questionId
+      : parseInt(String(questionId), 10);
   const res = await BaseApi.post<SubmitAnswerResponse>(
     `/exam-attempts/${attemptId}/answer`,
-    { questionId: qId, chosenAnswer }
+    { questionId: qId, chosenAnswer },
   );
   return res.data;
 }
