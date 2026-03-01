@@ -1,6 +1,7 @@
 import BaseApi from "@/api/BaseApi";
+import { BLOGS_PAGE_SIZE } from "@/CONSTS/pagination";
 import BlogIntroduction from "@/components/Blogs/BlogIntroduction";
-import BlogPagination from "@/components/antComponents/AntPagination/BlogPagination";
+import Pagination from "@/components/Pagination/Pagination";
 import type { Blog, BlogsResponse } from "@/lib/types/blog";
 
 type PageProps = {
@@ -12,13 +13,12 @@ export default async function BlogsPage({ searchParams }: PageProps) {
   const page = Number(sp.page ?? "1");
 
   const res = await BaseApi.get<BlogsResponse>("/blogs", {
-    params: { page, size: 10 },
+    params: { page, size: BLOGS_PAGE_SIZE },
   });
 
   const { data, page: resPage, total } = res.data;
   const pagination = {
     page: resPage ?? page,
-    size: 10,
     total: total ?? data.length,
   };
 
@@ -31,10 +31,11 @@ export default async function BlogsPage({ searchParams }: PageProps) {
         ))}
       </div>
       <div className="flex justify-end mt-6">
-        <BlogPagination
+        <Pagination
           page={pagination.page}
-          size={pagination.size}
           total={pagination.total}
+          pathname="/blogs"
+          pageSize={BLOGS_PAGE_SIZE}
         />
       </div>
     </div>

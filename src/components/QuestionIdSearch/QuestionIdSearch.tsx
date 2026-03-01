@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
-import { Input } from "antd";
+import { useRouter, usePathname } from "@/i18n/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -46,14 +45,22 @@ export default function QuestionIdSearch({
   );
 
   return (
-    <Input.Search
-      placeholder="Question ID"
-      allowClear
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onSearch={handleSearch}
-      onPressEnter={(e) => handleSearch((e.target as HTMLInputElement).value)}
-      className="max-w-xs"
-    />
+    <div className="flex w-full md:w-auto md:min-w-48">
+      <input
+        type="text"
+        placeholder="Question ID"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch(value)}
+        className="h-12 w-full rounded-l-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 md:max-w-xs"
+      />
+      <button
+        type="button"
+        onClick={() => handleSearch(value)}
+        className="h-12 rounded-r-lg border border-l-0 border-slate-300 bg-slate-100 px-4 text-slate-700 transition hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1"
+      >
+        Search
+      </button>
+    </div>
   );
 }

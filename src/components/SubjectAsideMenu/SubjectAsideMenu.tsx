@@ -16,7 +16,7 @@ const SubjectAsideMenu = async ({ category, sp }: SubjectAsideMenuProps) => {
   const t = await getTranslations("Tickets");
 
   return (
-    <aside className="w-full lg:w-72 shrink-0 space-y-4">
+    <aside className="z-10 w-full shrink-0 space-y-4 lg:w-72 lg:sticky lg:top-20">
       {/* MOBILE dropdown */}
       <SubjectSelectMobile
         category={category}
