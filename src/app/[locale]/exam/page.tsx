@@ -9,7 +9,10 @@ type ExamPageProps = {
   }>;
 };
 
-export default async function ExamPage({ params, searchParams }: ExamPageProps) {
+export default async function ExamPage({
+  params,
+  searchParams,
+}: ExamPageProps) {
   const { locale } = await params;
   const sp = searchParams ? await searchParams : undefined;
 
@@ -33,10 +36,5 @@ export default async function ExamPage({ params, searchParams }: ExamPageProps) 
     count: 30,
   });
 
-  return (
-    <ExamPageClient
-      questions={questions}
-      attemptId={attemptId}
-    />
-  );
+  return <ExamPageClient questions={questions} attemptId={attemptId} />;
 }

@@ -21,6 +21,7 @@ export default function ExamPageClient({
   const onRestart = () => {
     startTransition(() => router.refresh());
   };
+  console.log(questions);
 
   if (!questions.length) {
     return (
@@ -50,7 +51,11 @@ export default function ExamPageClient({
         </div>
       )}
       <div className="section flex-1 min-h-0 flex flex-col">
-        <ExamQuiz questions={questions} attemptId={attemptId} onRestart={onRestart} />
+        <ExamQuiz
+          questions={questions}
+          attemptId={attemptId}
+          onRestart={onRestart}
+        />
       </div>
     </div>
   );

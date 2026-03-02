@@ -1,5 +1,6 @@
-import { cookies } from "next/headers";
+import { getServerBaseApi } from "./ServerBaseApi";
 import type { ExamQuestion } from "@/lib/types/exam";
+import { normalizeQuestions } from "@/utills/helpers/normalizeQuestions";
 
 type FetchExamParams = {
   lang: string;
@@ -13,29 +14,9 @@ type FetchExamResult = {
   attemptId: number | null;
 };
 
-function normalizeQuestions(data: unknown): ExamQuestion[] {
-  if (Array.isArray(data)) return data as ExamQuestion[];
-  if (data && typeof data === "object" && "items" in data) {
-    return (data as { items: ExamQuestion[] }).items ?? [];
-  }
-  if (data && typeof data === "object" && "questions" in data) {
-    return (data as { questions: ExamQuestion[] }).questions ?? [];
-  }
-  return [];
-}
-
-export async function fetchExamServer(params: FetchExamParams): Promise<FetchExamResult> {
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_BACKEND_URL is not set");
-  }
-
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((c) => `${c.name}=${c.value}`)
-    .join("; ");
-
+export async function fetchExamServer(
+  params: FetchExamParams,
+): Promise<FetchExamResult> {
   const searchParams = new URLSearchParams({
     lang: params.lang,
     count: String(params.count ?? 30),
@@ -43,38 +24,30 @@ export async function fetchExamServer(params: FetchExamParams): Promise<FetchExa
   if (params.subjects) searchParams.set("subjects", params.subjects);
   if (params.categories) searchParams.set("categories", params.categories);
 
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    ...(cookieHeader ? { Cookie: cookieHeader } : {}),
-  };
-
   try {
-    const res = await fetch(`${baseUrl}/exam-attempts/start?${searchParams}`, {
-      method: "POST",
-      headers,
-      cache: "no-store",
-    });
+    const api = await getServerBaseApi();
+    const res = await api.post(`/exam-attempts/start?${searchParams}`);
 
     if (res.status === 401 || res.status === 403) {
-      return fetchRandomQuestions(baseUrl, params);
+      return fetchRandomQuestions(params);
     }
 
-    if (!res.ok) {
+    if (res.status !== 200 && res.status !== 201) {
       throw new Error(`Exam fetch failed: ${res.status}`);
     }
 
-    const data = await res.json();
+    const data = res.data;
     return {
       questions: normalizeQuestions(data.questions),
       attemptId: data.attemptId ?? null,
     };
   } catch {
-    return fetchRandomQuestions(baseUrl, params);
+    return fetchRandomQuestions(params);
   }
 }
 
 export async function fetchExamServerSafe(
-  params: FetchExamParams
+  params: FetchExamParams,
 ): Promise<FetchExamResult> {
   try {
     return await fetchExamServer(params);
@@ -84,8 +57,7 @@ export async function fetchExamServerSafe(
 }
 
 async function fetchRandomQuestions(
-  baseUrl: string,
-  params: FetchExamParams
+  params: FetchExamParams,
 ): Promise<FetchExamResult> {
   const searchParams = new URLSearchParams({
     lang: params.lang,
@@ -94,17 +66,15 @@ async function fetchRandomQuestions(
   });
   if (params.subjects) searchParams.set("subjects", params.subjects);
 
-  const res = await fetch(`${baseUrl}/questions/random?${searchParams}`, {
-    cache: "no-store",
-  });
+  const api = await getServerBaseApi();
+  const res = await api.get(`/questions/random?${searchParams}`);
 
-  if (!res.ok) {
+  if (res.status !== 200) {
     throw new Error("Failed to fetch questions");
   }
 
-  const data = await res.json();
   return {
-    questions: normalizeQuestions(data),
+    questions: normalizeQuestions(res.data),
     attemptId: null,
   };
 }
