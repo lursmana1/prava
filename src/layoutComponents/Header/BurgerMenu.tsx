@@ -94,8 +94,8 @@ export default function BurgerMenu() {
                 </Link>
               ))}
               <div className="my-2 border-t border-slate-200 pt-4">
-                {user ? (
-                  <>
+                <div className="flex items-center justify-between">
+                  {user ? (
                     <Link
                       href="/profile"
                       onClick={closeMenu}
@@ -103,23 +103,20 @@ export default function BurgerMenu() {
                     >
                       {user.name || user.email}
                     </Link>
+                  ) : (
                     <Link
-                      href="/auth/logout"
+                      href="/auth"
                       onClick={closeMenu}
                       className={navLinkClass}
                     >
-                      გასვლა
+                      შესვლა
                     </Link>
-                  </>
-                ) : (
-                  <Link
-                    href="/auth"
-                    onClick={closeMenu}
-                    className={navLinkClass}
-                  >
-                    შესვლა
-                  </Link>
-                )}
+                  )}
+                  <div className="mt-3">
+                    <LocaleSwitcher />
+                  </div>
+                </div>
+
                 <Link
                   href="/exam"
                   onClick={closeMenu}
@@ -127,9 +124,6 @@ export default function BurgerMenu() {
                 >
                   დაიწყე უფასო სიმულაცია
                 </Link>
-                <div className="mt-3">
-                  <LocaleSwitcher />
-                </div>
               </div>
             </div>
           </nav>

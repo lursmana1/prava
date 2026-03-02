@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { getUser } from "@/lib/auth";
+import { Link } from "@/i18n/navigation";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -31,6 +32,14 @@ export default async function ProfilePage() {
             <p className="font-medium">{user.type}</p>
           </div>
         )}
+        <div className="pt-4 border-t border-slate-200">
+          <Link
+            href="/auth/logout"
+            className="inline-block rounded-md bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200"
+          >
+            გასვლა
+          </Link>
+        </div>
       </div>
     </main>
   );
