@@ -36,7 +36,7 @@ const SubjectMenuCard = async ({ category, sp, subject }: SubjectMenuCardProps) 
         ${
           isActive
             ? "bg-blue-600 text-white border-blue-600"
-            : "bg-white hover:bg-gray-50 border-gray-200"
+            : "bg-white hover:bg-slate-50 border-slate-200"
         }
       `}
     >

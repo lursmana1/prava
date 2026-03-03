@@ -27,7 +27,7 @@ const SubjectAsideMenu = async ({ category, sp }: SubjectAsideMenuProps) => {
 
       {/* Subject cards - 2 cols mobile, 1 col desktop */}
       <div className="max-lg:hidden">
-        <div className="bg-white rounded-2xl shadow-sm border p-3 lg:p-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 lg:p-4">
           <h2 className="font-semibold text-sm lg:text-lg mb-3">
             {t("subjects")}
           </h2>

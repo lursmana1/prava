@@ -5,7 +5,7 @@ export const DEFAULT_PAGE_SIZE = 10;
 export const TICKETS_PAGE_SIZE = DEFAULT_PAGE_SIZE;
 
 /** Items per page for blogs */
-export const BLOGS_PAGE_SIZE = DEFAULT_PAGE_SIZE;
+export const BLOGS_PAGE_SIZE = 9;
 
 /** URL search param key for page number */
 export const PAGE_PARAM = "page";
@@ -25,8 +25,9 @@ export const PAGES_AROUND_CURRENT = 1;
 /** Pagination button styles (shared) */
 export const PAGINATION_STYLES = {
   navButton:
-    "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 disabled:pointer-events-none disabled:opacity-50",
-  pageButtonBase: "h-9 min-w-9 rounded-lg px-2 text-sm font-medium transition",
+    "inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 disabled:pointer-events-none disabled:opacity-50",
+  pageButtonBase:
+    "h-9 min-w-9 rounded-lg px-2 text-sm font-medium transition cursor-pointer",
   pageButtonActive: "bg-slate-900 text-white",
   pageButtonInactive:
     "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900",

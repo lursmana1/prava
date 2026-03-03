@@ -112,9 +112,7 @@ export default function BurgerMenu() {
                       შესვლა
                     </Link>
                   )}
-                  <div className="mt-3">
-                    <LocaleSwitcher />
-                  </div>
+                  <LocaleSwitcher />
                 </div>
 
                 <Link

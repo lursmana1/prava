@@ -25,8 +25,8 @@ const SubjectPickerPage = async ({ searchParams }: PageProps) => {
   ).then((r) => r.data);
 
   return (
-    <div className="section flex flex-col gap-6 justify-center items-center">
-      <h1 className="font-georgian my-2 text-3xl font-bold">
+    <div className="section flex flex-col gap-4 py-6 lg:gap-3 lg:py-4 justify-center items-center">
+      <h1 className="font-georgian text-3xl font-bold">
         {t("pageTitle")}
       </h1>
       <CategorySelect categories={categories} activeCategoryId={categoryId} />

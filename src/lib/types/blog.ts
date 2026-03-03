@@ -1,3 +1,7 @@
+export type BlogCreator = {
+  name: string;
+};
+
 export type Blog = {
   id: number;
   name: string;
@@ -6,6 +10,7 @@ export type Blog = {
   imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
+  creator?: BlogCreator;
 };
 
 export type BlogsResponse = {

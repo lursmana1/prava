@@ -1,25 +1,17 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Blog } from "@/lib/types/blog";
+import { formatDate } from "@/utills/helpers/formatDate";
+import { getLocale } from "next-intl/server";
 
-function formatDate(date: Date | string) {
-  const d = typeof date === "string" ? new Date(date) : date;
-  return new Intl.DateTimeFormat("ka-GE", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(d);
-}
-
-const BlogIntroduction = ({
+const BlogIntroduction = async ({
   id,
   name,
   description,
   imageUrl,
   createdAt,
 }: Blog) => {
+  const locale = await getLocale();
   return (
     <article className="flex flex-col sm:flex-row gap-6 py-6 border-b border-slate-200 last:border-b-0 first:pt-0">
       <div className="shrink-0 w-full sm:w-[35%] sm:max-w-[280px] aspect-4/3 relative rounded-lg overflow-hidden bg-slate-100">
@@ -44,7 +36,7 @@ const BlogIntroduction = ({
                 : createdAt.toISOString()
             }
           >
-            {formatDate(createdAt)}
+            {formatDate(createdAt, locale, "D MMM YYYY")}
           </time>
         </div>
         <p className="text-slate-600 text-[15px] leading-relaxed line-clamp-3 mb-4 flex-1">

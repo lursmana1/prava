@@ -45,19 +45,19 @@ export default function QuestionIdSearch({
   );
 
   return (
-    <div className="flex w-full md:w-auto md:min-w-48">
+    <div className="flex w-full overflow-hidden rounded-lg bg-slate-50 md:w-auto md:min-w-48">
       <input
         type="text"
         placeholder="Question ID"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSearch(value)}
-        className="h-12 w-full rounded-l-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 md:max-w-xs"
+        className="h-12 w-full border-0 bg-transparent px-3 py-2 text-slate-900 placeholder:text-slate-400 outline-none focus:border-0 focus:outline-none focus:ring-0 md:max-w-xs"
       />
       <button
         type="button"
         onClick={() => handleSearch(value)}
-        className="h-12 rounded-r-lg border border-l-0 border-slate-300 bg-slate-100 px-4 text-slate-700 transition hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1"
+        className="h-12 shrink-0 border-0 bg-slate-100 px-4 text-slate-700 transition hover:bg-slate-200 focus:outline-none focus:ring-0"
       >
         Search
       </button>
