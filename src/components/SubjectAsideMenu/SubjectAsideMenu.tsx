@@ -1,5 +1,6 @@
 import { subjects } from "@/CONSTS/subjectDummy";
 import SubjectMenuCard from "./SubjectMenuCard";
+import SubjectAllCard from "./SubjectAllCard";
 import { getTranslations } from "next-intl/server";
 import SubjectSelectMobile from "./SubjectSelets";
 
@@ -23,6 +24,7 @@ const SubjectAsideMenu = async ({ category, sp }: SubjectAsideMenuProps) => {
         sp={sp}
         subjects={subjects}
         label={t("subjects")}
+        allSubjectsLabel={t("allSubjects")}
       />
 
       {/* Subject cards - 2 cols mobile, 1 col desktop */}
@@ -33,6 +35,7 @@ const SubjectAsideMenu = async ({ category, sp }: SubjectAsideMenuProps) => {
           </h2>
 
           <div className="grid grid-cols-2 lg:flex lg:flex-col gap-1.5 lg:gap-2 max-h-[70vh] overflow-y-auto pr-1">
+            <SubjectAllCard category={category} sp={sp} label={t("allSubjects")} />
             {subjects.map((subject) => (
               <SubjectMenuCard
                 key={subject.id}

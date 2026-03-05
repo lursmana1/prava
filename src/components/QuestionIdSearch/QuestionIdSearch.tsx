@@ -1,6 +1,25 @@
 "use client";
 
 import { useRouter, usePathname } from "@/i18n/navigation";
+
+function ClearIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
+}
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -44,6 +63,11 @@ export default function QuestionIdSearch({
     [currentParams, pathname, router],
   );
 
+  const handleClear = () => {
+    setValue("");
+    handleSearch("");
+  };
+
   return (
     <div className="flex w-full overflow-hidden rounded-lg bg-slate-50 md:w-auto md:min-w-48">
       <input
@@ -54,6 +78,16 @@ export default function QuestionIdSearch({
         onKeyDown={(e) => e.key === "Enter" && handleSearch(value)}
         className="h-12 w-full border-0 bg-transparent px-3 py-2 text-slate-900 placeholder:text-slate-400 outline-none focus:border-0 focus:outline-none focus:ring-0 md:max-w-xs"
       />
+      {value && (
+        <button
+          type="button"
+          onClick={handleClear}
+          aria-label="Clear"
+          className="h-12 shrink-0 border-0 bg-transparent px-2 text-slate-400 transition hover:text-slate-600 focus:outline-none focus:ring-0"
+        >
+          <ClearIcon />
+        </button>
+      )}
       <button
         type="button"
         onClick={() => handleSearch(value)}

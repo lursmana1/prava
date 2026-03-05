@@ -78,6 +78,14 @@
     "footerPrivacyLink": "კონფიდენციალურობა",
     "footerCookies": "Cookie პარამეტრები"
   },
+  "Leaderboard": {
+    "days": "{count} დღე",
+    "empty": "ჯერ არ არის მონაცემები",
+    "yourPlace": "შენი ადგილი",
+    "yourScore": "#{place} — {score} ქულა",
+    "noActive": "ლიდერბორდი ამჟამად არ არის აქტიური. ის ხელმისაწვდომი იქნება მითითებული პერიოდის განმავლობაში.",
+    "period": "{start} – {end}"
+  },
   "SubjectPicker": {
     "pageTitle": "საკითხების არჩევა",
     "toggleAll": "ყველას მონიშვნა / მოხსნა",
@@ -99,6 +107,7 @@
   },
   "Tickets": {
     "subjects": "საკითხები",
+    "allSubjects": "ყველა საკითხი",
     "subjectNumber": "საკითხი #{id}",
     "ticketExplanation": "ბილეთის განმარტება"
   },

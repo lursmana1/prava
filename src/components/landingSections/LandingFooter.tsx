@@ -26,7 +26,7 @@ export default async function LandingFooter() {
             <ul className="mt-4 space-y-2 text-sm text-slate-600">
               <li><Link href="/exam" className="hover:text-slate-900">{t("footerSimulation")}</Link></li>
               <li><Link href="/subjectpicker" className="hover:text-slate-900">{t("footerTopics")}</Link></li>
-              <li><Link href="#" className="hover:text-slate-900">{t("footerLeaderboard")}</Link></li>
+              <li><Link href="/leaderboard" className="hover:text-slate-900">{t("footerLeaderboard")}</Link></li>
               <li><Link href="#" className="hover:text-slate-900">{t("footerPrizes")}</Link></li>
             </ul>
           </nav>

@@ -11,6 +11,7 @@ type Props = {
   sp: Record<string, string | undefined>;
   subjects: Subject[];
   label: string;
+  allSubjectsLabel: string;
 };
 
 export default function SubjectSelectMobile({
@@ -18,6 +19,7 @@ export default function SubjectSelectMobile({
   sp,
   subjects,
   label,
+  allSubjectsLabel,
 }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -30,11 +32,11 @@ export default function SubjectSelectMobile({
   );
   const selectedLabel =
     selected === ""
-      ? "ყველა საგანი"
-      : subjects.find((s) => String(s.id) === selected)?.name ?? "ყველა საგანი";
+      ? allSubjectsLabel
+      : subjects.find((s) => String(s.id) === selected)?.name ?? allSubjectsLabel;
 
   const options = [
-    { value: "", label: "ყველა საგანი" },
+    { value: "", label: allSubjectsLabel },
     ...subjects.map((s) => ({ value: String(s.id), label: s.name })),
   ];
 

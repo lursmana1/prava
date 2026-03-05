@@ -78,6 +78,14 @@
     "footerPrivacyLink": "Privacy",
     "footerCookies": "Cookie settings"
   },
+  "Leaderboard": {
+    "days": "{count} days",
+    "empty": "No data yet",
+    "yourPlace": "Your place",
+    "yourScore": "#{place} — {score} points",
+    "noActive": "Leaderboard is not active at the moment. It will be available during the specified period.",
+    "period": "{start} – {end}"
+  },
   "SubjectPicker": {
     "pageTitle": "Choose Topics",
     "toggleAll": "Select / Deselect All",
@@ -99,6 +107,7 @@
   },
   "Tickets": {
     "subjects": "Topics",
+    "allSubjects": "All topics",
     "subjectNumber": "Topic #{id}",
     "ticketExplanation": "Ticket explanation"
   },

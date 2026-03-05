@@ -78,6 +78,14 @@
     "footerPrivacyLink": "Конфиденциальность",
     "footerCookies": "Настройки cookie"
   },
+  "Leaderboard": {
+    "days": "{count} дн.",
+    "empty": "Пока нет данных",
+    "yourPlace": "Ваше место",
+    "yourScore": "#{place} — {score} очков",
+    "noActive": "Таблица лидеров сейчас неактивна. Она будет доступна в указанный период.",
+    "period": "{start} – {end}"
+  },
   "SubjectPicker": {
     "pageTitle": "Выбор тем",
     "toggleAll": "Выбрать / Снять всё",
@@ -99,6 +107,7 @@
   },
   "Tickets": {
     "subjects": "Темы",
+    "allSubjects": "Все темы",
     "subjectNumber": "Тема #{id}",
     "ticketExplanation": "Объяснение билета"
   },

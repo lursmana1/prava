@@ -93,7 +93,7 @@ export default async function LandingHow() {
                 </ul>
               </div>
               <Link
-                href="#"
+                href="/leaderboard"
                 className="mt-4 flex justify-center text-sm font-medium text-blue-600 hover:underline"
               >
                 {t("leaderboardFull")}

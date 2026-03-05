@@ -26,7 +26,7 @@ export default async function BlogsPage({ searchParams }: PageProps) {
 
   return (
     <div className=" bg-white">
-      <section className="section py-12 sm:py-16">
+      <section className="section py-6 sm:py-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-8">
           Blogs
         </h2>
