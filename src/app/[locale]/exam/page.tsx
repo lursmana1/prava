@@ -29,12 +29,18 @@ export default async function ExamPage({
   const category = categoryRaw ? Number(categoryRaw) : 1;
   const subjectsStr = subjects.join(",");
 
-  const { questions, attemptId } = await fetchExamServerSafe({
+  const { questions, attemptId, endDate } = await fetchExamServerSafe({
     lang: locale as "ka" | "en" | "ru",
     subjects: subjectsStr || undefined,
     categories: String(category),
     count: 30,
   });
 
-  return <ExamPageClient questions={questions} attemptId={attemptId} />;
+  return (
+    <ExamPageClient
+      questions={questions}
+      attemptId={attemptId}
+      endDate={endDate}
+    />
+  );
 }

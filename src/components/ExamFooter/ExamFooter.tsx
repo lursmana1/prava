@@ -12,7 +12,7 @@ type ExamFooterProps = {
   selectAnswer: (key: string) => void;
   selectedAnswer?: string;
   correctAnswer?: string;
-};
+  };
 
 const ExamFooter = (props: ExamFooterProps) => {
   const navigationVisibility = !!props.showNext;

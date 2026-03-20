@@ -31,8 +31,7 @@ export default async function TicketsCategoryPage({
   const size = TICKETS_PAGE_SIZE;
   const subjects = sp.subjects ?? "";
   const questionId = sp.questionId ?? "";
-  console.log('zd');
-  
+
   const [categories, questionsRes]: [Category[], QuestionsResponse] =
     await Promise.all([
       BaseApi.get("/categories").then((r) => r.data),
@@ -58,6 +57,8 @@ export default async function TicketsCategoryPage({
     page: questionsRes?.page ?? 1,
     total: questionsRes?.total ?? questions.length,
   };
+
+  console.log(questions, "zd");
 
   return (
     <div className="section space-y-6 py-8">

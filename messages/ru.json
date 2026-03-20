@@ -100,7 +100,16 @@
     "mistakeCount": "Вы допустили {count} ошибок.",
     "tryAgain": "Попробуйте снова.",
     "examPassed": "Вы успешно сдали теоретический экзамен на водительские права",
-    "retake": "Пройти заново"
+    "retake": "Пройти заново",
+    "historyTitle": "История экзаменов",
+    "historyEmpty": "Пока нет экзаменов",
+    "startNew": "Начать новый экзамен",
+    "weakQuestionsTitle": "Вопросы для повторения",
+    "weakSubjectsTitle": "Слабые темы",
+    "question": "Вопрос",
+    "wrongCount": "ошибок",
+    "correctCount": "правильно",
+    "totalQuestions": "всего"
   },
   "Categories": {
     "questionCount": "{count} вопросов"
@@ -109,7 +118,10 @@
     "subjects": "Темы",
     "allSubjects": "Все темы",
     "subjectNumber": "Тема #{id}",
-    "ticketExplanation": "Объяснение билета"
+    "ticketExplanation": "Объяснение билета",
+    "aiTutorListen": "Слушать объяснение ИИ",
+    "aiTutorStop": "Стоп",
+    "aiTutorShowText": "Текст объяснения"
   },
   "Auth": {
     "noAccount": "Нет аккаунта?",

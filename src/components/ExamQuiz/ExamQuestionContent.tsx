@@ -41,7 +41,7 @@ export default function ExamQuestionContent({
             <Image
               src={"/" + question.img}
               alt={question.question || ""}
-              className="m-auto h-auto w-full max-h-44 object-contain sm:max-h-72 lg:max-h-[280px]"
+              className="m-auto h-auto max-h-44 sm:max-h-72 lg:max-h-[280px]"
               width={1000}
               height={410}
               priority

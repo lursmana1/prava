@@ -14,6 +14,18 @@ export interface ExamQuestion {
   hasImg: number;
   img?: string | null;
   imgSize?: null;
+  /** Optional AI tutor explanation (Georgian text from API). */
+  ai_tutor?: string | null;
+  /** Same field; some JSON APIs expose camelCase. */
+  aiTutor?: string | null;
+}
+
+/** Resolve tutor text whether API sent snake_case or camelCase. */
+export function getAiTutorText(q: ExamQuestion): string {
+  const raw = q.ai_tutor ?? q.aiTutor;
+  if (typeof raw !== "string") return "";
+  const s = raw.trim();
+  return s;
 }
 
 export type QuestionsResponse = {

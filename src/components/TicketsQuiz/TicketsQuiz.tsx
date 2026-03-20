@@ -1,11 +1,13 @@
 "use client";
 
-import type { ExamQuestion } from "@/lib/types/exam";
+import { useLocale, useTranslations } from "next-intl";
+import { getAiTutorText, type ExamQuestion } from "@/lib/types/exam";
 import Image from "next/image";
 import QuizButton from "../QuizButton/QuizButton";
 import ExamFooter from "../ExamFooter/ExamFooter";
 import QuestionExplanation from "../QuestionExplanation/QuestionExplanation";
 import { getAnswers } from "@/utills/helpers/getAnswers";
+import { AiTutorReadButton } from "./AiTutorReadButton";
 
 type TicketQuizProps = {
   question: ExamQuestion;
@@ -20,8 +22,11 @@ export default function TicketQuiz({
   selectedAnswer,
   onSelect,
 }: TicketQuizProps) {
+  const t = useTranslations("Tickets");
+  const locale = useLocale();
   const answers = getAnswers(question);
   const qId = String(question.id);
+  const aiTutorText = getAiTutorText(question);
 
   const handleSelect = (key: string) => {
     onSelect(qId, key);
@@ -51,6 +56,22 @@ export default function TicketQuiz({
           <p className="font-georgian p-4 text-white text-sm border border-white bg-black/50 rounded-md mb-4">
             {question.question}
           </p>
+
+          {aiTutorText !== "" && (
+            <div className="mb-4 space-y-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <AiTutorReadButton id={qId} text={aiTutorText} lang={locale} />
+              </div>
+              <details className="rounded-md border border-white/30 bg-black/30 p-3 text-white/90">
+                <summary className="cursor-pointer text-sm font-medium">
+                  {t("aiTutorShowText")}
+                </summary>
+                <p className="mt-2 font-georgian text-sm leading-relaxed">
+                  {aiTutorText}
+                </p>
+              </details>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 auto-rows-fr items-stretch">
             {answers.map((a) => (

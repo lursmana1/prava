@@ -1,8 +1,9 @@
-export const EXAM_DURATION_SECONDS = 1800; // 1 minute
+export const EXAM_DURATION_SECONDS = 1800; // 30 minutes
 
 export const EXAM_TOTAL_QUESTIONS = 30;
 
-export const PASS_SCORE = 27;
+/** 70% of 30 = 21 */
+export const PASS_SCORE = 21;
 
 export const MAX_MISTAKES = 3;
 

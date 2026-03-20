@@ -100,7 +100,16 @@
     "mistakeCount": "You made {count} mistakes.",
     "tryAgain": "Try again.",
     "examPassed": "You successfully passed the driving license theory exam",
-    "retake": "Retake"
+    "retake": "Retake",
+    "historyTitle": "Exam History",
+    "historyEmpty": "No exams yet",
+    "startNew": "Start New Exam",
+    "weakQuestionsTitle": "Questions to Review",
+    "weakSubjectsTitle": "Weak Topics",
+    "question": "Question",
+    "wrongCount": "wrong",
+    "correctCount": "correct",
+    "totalQuestions": "total"
   },
   "Categories": {
     "questionCount": "{count} questions"
@@ -109,7 +118,10 @@
     "subjects": "Topics",
     "allSubjects": "All topics",
     "subjectNumber": "Topic #{id}",
-    "ticketExplanation": "Ticket explanation"
+    "ticketExplanation": "Ticket explanation",
+    "aiTutorListen": "Listen to AI tutor",
+    "aiTutorStop": "Stop",
+    "aiTutorShowText": "Read explanation (text)"
   },
   "Auth": {
     "noAccount": "Don't have an account?",

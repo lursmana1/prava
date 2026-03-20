@@ -96,11 +96,20 @@
     "loadingNewQuestions": "ახალი კითხვების ჩატვირთვა...",
     "autoAdvance": "ავტომატურად შემდეგზე",
     "restart": "თავიდან დაწყება",
-    "examFailed": "გამოცდა ჩაიჭრა",
+    "examFailed": "თქვენ ჩაიჭერით მართვის მოწმობის თეორიული გამოცდაში",
     "mistakeCount": "თქვენ დაუშვით {count} შეცდომა.",
     "tryAgain": "სცადეთ თავიდან.",
     "examPassed": "თქვენ წარმატებით ჩააბარეთ მართვის მოწმობის თეორიული",
-    "retake": "ხელახლა გავლა"
+    "retake": "ხელახლა გავლა",
+    "historyTitle": "გამოცდების ისტორია",
+    "historyEmpty": "ჯერ არ არის გამოცდები",
+    "startNew": "ახალი გამოცდის დაწყება",
+    "weakQuestionsTitle": "გასაუმჯობესებელი კითხვები",
+    "weakSubjectsTitle": "სუსტი საკითხები",
+    "question": "კითხვა",
+    "wrongCount": "შეცდომა",
+    "correctCount": "სწორი",
+    "totalQuestions": "სულ"
   },
   "Categories": {
     "questionCount": "{count} კითხვა"
@@ -109,7 +118,10 @@
     "subjects": "საკითხები",
     "allSubjects": "ყველა საკითხი",
     "subjectNumber": "საკითხი #{id}",
-    "ticketExplanation": "ბილეთის განმარტება"
+    "ticketExplanation": "ბილეთის განმარტება",
+    "aiTutorListen": "მოუსმინე AI-ს",
+    "aiTutorStop": "გაჩერება",
+    "aiTutorShowText": "ტექსტით განმარტება"
   },
   "Auth": {
     "noAccount": "არ გაქვთ ანგარიში?",

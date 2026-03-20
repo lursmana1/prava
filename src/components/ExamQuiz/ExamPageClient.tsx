@@ -9,11 +9,13 @@ import type { ExamQuestion } from "@/lib/types/exam";
 type ExamPageClientProps = {
   questions: ExamQuestion[];
   attemptId: number | null;
+  endDate: string | null;
 };
 
 export default function ExamPageClient({
   questions,
   attemptId,
+  endDate,
 }: ExamPageClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -21,8 +23,6 @@ export default function ExamPageClient({
   const onRestart = () => {
     startTransition(() => router.refresh());
   };
-  console.log(questions);
-
   if (!questions.length) {
     return (
       <div className="bg-[#193e4a] min-h-dvh flex items-center justify-center">

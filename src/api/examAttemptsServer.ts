@@ -7,11 +7,13 @@ type FetchExamParams = {
   subjects?: string;
   categories?: string;
   count?: number;
+  allSubjects?: boolean;
 };
 
 type FetchExamResult = {
   questions: ExamQuestion[];
   attemptId: number | null;
+  endDate: string | null;
 };
 
 export async function fetchExamServer(
@@ -23,6 +25,7 @@ export async function fetchExamServer(
   });
   if (params.subjects) searchParams.set("subjects", params.subjects);
   if (params.categories) searchParams.set("categories", params.categories);
+  if (params.allSubjects) searchParams.set("allSubjects", "true");
 
   try {
     const api = await getServerBaseApi();
@@ -40,6 +43,7 @@ export async function fetchExamServer(
     return {
       questions: normalizeQuestions(data.questions),
       attemptId: data.attemptId ?? null,
+      endDate: data.endDate ?? null,
     };
   } catch {
     return fetchRandomQuestions(params);
@@ -52,7 +56,7 @@ export async function fetchExamServerSafe(
   try {
     return await fetchExamServer(params);
   } catch {
-    return { questions: [], attemptId: null };
+    return { questions: [], attemptId: null, endDate: null };
   }
 }
 
@@ -76,5 +80,6 @@ async function fetchRandomQuestions(
   return {
     questions: normalizeQuestions(res.data),
     attemptId: null,
+    endDate: null,
   };
 }

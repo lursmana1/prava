@@ -3,7 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type ExamTimerProps = {
+  /** Fallback when endDate is not provided */
   initialSeconds: number;
+  /** Server deadline (ISO string). Countdown to this time. */
+  endDate?: string | null;
   paused?: boolean;
   onTimeUp: () => void;
   restartKey?: number;
@@ -15,19 +18,30 @@ function formatTime(secondsLeft: number) {
   return `${mm}:${ss}`;
 }
 
+function secondsUntil(endDateIso: string): number {
+  const end = new Date(endDateIso).getTime();
+  const now = Date.now();
+  return Math.max(0, Math.floor((end - now) / 1000));
+}
+
 export default function ExamCountDown({
   initialSeconds,
+  endDate,
   paused = false,
   onTimeUp,
   restartKey = 0,
 }: ExamTimerProps) {
-  const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
+  const computedInitial = useMemo(
+    () => (endDate ? secondsUntil(endDate) : initialSeconds),
+    [endDate, initialSeconds, restartKey],
+  );
+  const [secondsLeft, setSecondsLeft] = useState(computedInitial);
   const onTimeUpRef = useRef(onTimeUp);
   onTimeUpRef.current = onTimeUp;
 
   useEffect(() => {
-    setSecondsLeft(initialSeconds);
-  }, [initialSeconds, restartKey]);
+    setSecondsLeft(endDate ? secondsUntil(endDate) : initialSeconds);
+  }, [endDate, initialSeconds, restartKey]);
 
   useEffect(() => {
     if (paused || secondsLeft <= 0) return;

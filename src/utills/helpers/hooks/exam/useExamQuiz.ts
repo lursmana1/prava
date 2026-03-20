@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ExamQuestion } from "@/lib/types/exam";
+import type { FinishExamResponse } from "@/api/examAttempts";
 import {
   EXAM_TOTAL_QUESTIONS,
   MAX_MISTAKES,
@@ -15,11 +16,12 @@ import { useExamProgress } from "@/utills/helpers/hooks/useExamProgress";
 import { useQuestionNavigation } from "@/utills/helpers/hooks/useQuizNavigation";
 import { useAutoAdvance } from "./useAutoAdvance";
 import { useExamRestart } from "./useExamRestart";
-import { submitAnswer } from "@/api/examAttempts";
+import { submitAnswer, finishExam } from "@/api/examAttempts";
 
 export function useExamQuiz(
   questions: ExamQuestion[],
   attemptId?: number | null,
+  endDate?: string | null,
   onRestart?: () => void,
 ) {
   const safeQuestions = useMemo(
@@ -30,14 +32,59 @@ export function useExamQuiz(
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [timerRestartKey, setTimerRestartKey] = useState(0);
   const [answersById, setAnswersById] = useState<Record<string, string>>({});
+  const [finishResult, setFinishResult] = useState<FinishExamResponse | null>(
+    null,
+  );
+  const finishCalledRef = useRef(false);
 
   const { autoAdvance, handleAutoAdvanceChange, timeoutRef } = useAutoAdvance();
 
-  const { score, mistake, totalAnswered } = useExamProgress(safeQuestions, answersById);
+  const { score, mistake, totalAnswered } = useExamProgress(
+    safeQuestions,
+    answersById,
+  );
 
   const examFinished = totalAnswered >= EXAM_TOTAL_QUESTIONS || isTimeUp;
   const examFailed = mistake > MAX_MISTAKES;
   const examEnded = examFinished || examFailed;
+
+  const callFinish = useCallback(async () => {
+    if (finishCalledRef.current || !attemptId) return;
+    finishCalledRef.current = true;
+    try {
+      const result = await finishExam(attemptId);
+      setFinishResult(result);
+    } catch {
+      setFinishResult({
+        completedAt: new Date().toISOString(),
+        passed: false,
+        durationSeconds: 0,
+      });
+    }
+  }, [attemptId]);
+
+  const handleTimeUp = useCallback(() => {
+    setIsTimeUp(true);
+    callFinish();
+  }, [callFinish]);
+
+  const handleFinish = useCallback(() => {
+    if (examEnded) return;
+    callFinish();
+    setIsTimeUp(true);
+  }, [callFinish, examEnded]);
+
+  useEffect(() => {
+    if (examFinished && attemptId && !finishCalledRef.current) {
+      callFinish();
+    }
+  }, [examFinished, attemptId, callFinish]);
+
+  useEffect(() => {
+    if (examFailed && attemptId && !finishCalledRef.current) {
+      callFinish();
+    }
+  }, [examFailed, attemptId, callFinish]);
 
   const nav = useQuestionNavigation(safeQuestions.length, examEnded);
   const navNextRef = useRef(nav.next);
@@ -58,6 +105,8 @@ export function useExamQuiz(
     nav.reset();
     setAnswersById({});
     setIsTimeUp(false);
+    setFinishResult(null);
+    finishCalledRef.current = false;
     setTimerRestartKey((k) => k + 1);
   }, [nav.reset]);
 
@@ -87,7 +136,17 @@ export function useExamQuiz(
         }, AUTO_ADVANCE_DELAY_MS);
       }
     },
-    [qId, examFinished, examFailed, selectedAnswer, nav.index, safeQuestions.length, autoAdvance, attemptId, q],
+    [
+      qId,
+      examFinished,
+      examFailed,
+      selectedAnswer,
+      nav.index,
+      safeQuestions.length,
+      autoAdvance,
+      attemptId,
+      q,
+    ],
   );
 
   const isSwipeEnabled = useMediaQuery(MEDIA_BELOW_LG);
@@ -111,14 +170,16 @@ export function useExamQuiz(
     score,
     mistake,
     isTimeUp,
-    setIsTimeUp,
     timerRestartKey,
     handleRestart,
     handleSelect,
+    handleTimeUp,
+    handleFinish,
     autoAdvance,
     handleAutoAdvanceChange,
     isSwipeEnabled,
     swipe,
     safeQuestions,
+    finishResult,
   };
 }

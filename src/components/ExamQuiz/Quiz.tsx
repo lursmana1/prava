@@ -22,11 +22,17 @@ import ExamQuestionContent from "./ExamQuestionContent";
 type ExamQuizProps = {
   questions: ExamQuestion[];
   attemptId?: number | null;
+  endDate?: string | null;
   onRestart?: () => void;
 };
 
-export default function ExamQuiz({ questions, attemptId = null, onRestart }: ExamQuizProps) {
-  const exam = useExamQuiz(questions, attemptId, onRestart);
+export default function ExamQuiz({
+  questions,
+  attemptId = null,
+  endDate = null,
+  onRestart,
+}: ExamQuizProps) {
+  const exam = useExamQuiz(questions, attemptId, endDate, onRestart);
 
   if (!exam.safeQuestions.length || !exam.q) return null;
 
@@ -47,9 +53,10 @@ export default function ExamQuiz({ questions, attemptId = null, onRestart }: Exa
           timeLabel={
             <ExamCountDown
               initialSeconds={EXAM_DURATION_SECONDS}
+              endDate={endDate ?? undefined}
               paused={examEnded}
               restartKey={exam.timerRestartKey}
-              onTimeUp={() => exam.setIsTimeUp(true)}
+              onTimeUp={exam.handleTimeUp}
             />
           }
           currentQuestion={nav.index + 1}
@@ -101,16 +108,19 @@ export default function ExamQuiz({ questions, attemptId = null, onRestart }: Exa
         <ExamRetryModal
           handleRestart={exam.handleRestart}
           mistake={exam.mistake}
+          finishResult={exam.finishResult}
         />
       )}
 
-      {examFinished && exam.score >= PASS_SCORE && (
+      {examFinished && (exam.finishResult || !attemptId) && (
         <ExamSuccessModal
           handleRestart={exam.handleRestart}
-          mistake={exam.mistake}
+          passed={exam.finishResult?.passed ?? exam.score >= PASS_SCORE}
+          durationSeconds={exam.finishResult?.durationSeconds ?? 0}
+          correctCount={exam.score}
+          totalCount={exam.safeQuestions.length}
         />
       )}
-
     </div>
   );
 }
