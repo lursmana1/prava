@@ -8,6 +8,7 @@ import ExamFooter from "../ExamFooter/ExamFooter";
 import QuestionExplanation from "../QuestionExplanation/QuestionExplanation";
 import { getAnswers } from "@/utills/helpers/getAnswers";
 import { AiTutorReadButton } from "./AiTutorReadButton";
+import { AiTutorText } from "./AiTutorText";
 
 type TicketQuizProps = {
   question: ExamQuestion;
@@ -62,14 +63,7 @@ export default function TicketQuiz({
               <div className="flex flex-wrap items-center gap-3">
                 <AiTutorReadButton id={qId} text={aiTutorText} lang={locale} />
               </div>
-              <details className="rounded-md border border-white/30 bg-black/30 p-3 text-white/90">
-                <summary className="cursor-pointer text-sm font-medium">
-                  {t("aiTutorShowText")}
-                </summary>
-                <p className="mt-2 font-georgian text-sm leading-relaxed">
-                  {aiTutorText}
-                </p>
-              </details>
+              <AiTutorText text={aiTutorText} label={t("aiTutorShowText")} />
             </div>
           )}
 

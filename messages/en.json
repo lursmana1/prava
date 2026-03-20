@@ -104,7 +104,7 @@
     "historyTitle": "Exam History",
     "historyEmpty": "No exams yet",
     "startNew": "Start New Exam",
-    "weakQuestionsTitle": "Questions to Review",
+    "weakQuestionsTitle": "Questions to Review",  
     "weakSubjectsTitle": "Weak Topics",
     "question": "Question",
     "wrongCount": "wrong",
@@ -121,7 +121,7 @@
     "ticketExplanation": "Ticket explanation",
     "aiTutorListen": "Listen to AI tutor",
     "aiTutorStop": "Stop",
-    "aiTutorShowText": "Read explanation (text)"
+    "aiTutorShowText": "Ticket AI explanation"
   },
   "Auth": {
     "noAccount": "Don't have an account?",

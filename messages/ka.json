@@ -121,7 +121,7 @@
     "ticketExplanation": "ბილეთის განმარტება",
     "aiTutorListen": "მოუსმინე AI-ს",
     "aiTutorStop": "გაჩერება",
-    "aiTutorShowText": "ტექსტით განმარტება"
+    "aiTutorShowText": "ბილეთის AI განმარტება"
   },
   "Auth": {
     "noAccount": "არ გაქვთ ანგარიში?",

@@ -110,7 +110,7 @@
     "wrongCount": "ошибок",
     "correctCount": "правильно",
     "totalQuestions": "всего"
-  },
+  },    
   "Categories": {
     "questionCount": "{count} вопросов"
   },
@@ -121,7 +121,7 @@
     "ticketExplanation": "Объяснение билета",
     "aiTutorListen": "Слушать объяснение ИИ",
     "aiTutorStop": "Стоп",
-    "aiTutorShowText": "Текст объяснения"
+    "aiTutorShowText": "Билет AI объяснение"
   },
   "Auth": {
     "noAccount": "Нет аккаунта?",
