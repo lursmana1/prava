@@ -19,7 +19,6 @@
     "antd": "^6.3.0",
     "axios": "^1.13.4",
     "dayjs": "^1.11.19",
-    "isomorphic-dompurify": "^3.0.0",
     "next": "^16.1.6",
     "next-intl": "^4.5.1",
     "react": "19.2.0",
