@@ -35,7 +35,7 @@ Georgian driving license exam preparation platform. Users practice with exam tic
 - No global state library. Uses `useState`, URL search params, custom hooks.
 - Custom hooks: `useQuizNavigation`, `useExamProgress`, `useArrowNavigation`, `useWindowSize`
 
-## Backend (github.com/lursmana1/nest)
+## Backend ([github.com/lursmana1/driving-theory-back](https://github.com/lursmana1/driving-theory-back))
 - **Framework**: NestJS 11 + TypeScript
 - **Databases**: MongoDB (Mongoose) + MySQL (TypeORM)
 - **Auth**: JWT via httpOnly cookies (Passport)

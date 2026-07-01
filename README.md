@@ -15,8 +15,8 @@
 
 | | |
 |---|---|
-| **Frontend** | This repo — [github.com/lursmana1/prava](https://github.com/lursmana1/prava) |
-| **Backend** | [github.com/lursmana1/nest](https://github.com/lursmana1/nest) |
+| **Frontend** | This repo — [github.com/lursmana1/driving-theory-front](https://github.com/lursmana1/driving-theory-front) |
+| **Backend** | [github.com/lursmana1/driving-theory-back](https://github.com/lursmana1/driving-theory-back) |
 | **Deploy** | [Vercel](https://prava-orcin.vercel.app) + [Render](https://nest-bw53.onrender.com) (API) |
 
 ## Features
@@ -33,19 +33,19 @@
 - **Next.js 16** (App Router) · **React 19** · **TypeScript**
 - **Tailwind CSS 4** · **Ant Design 6**
 - **next-intl** · **Axios** (cookie-based auth)
-- **NestJS** API ([separate repo](https://github.com/lursmana1/nest))
+- **NestJS** API ([driving-theory-back](https://github.com/lursmana1/driving-theory-back))
 
 ## Getting started
 
 ### Requirements
 
 - Node.js 20+
-- [Nest backend](https://github.com/lursmana1/nest) running locally or use the deployed API
+- [Nest backend](https://github.com/lursmana1/driving-theory-back) running locally or use the deployed API
 
 ### Install
 
 ```bash
-git clone https://github.com/lursmana1/prava.git
+git clone https://github.com/lursmana1/driving-theory-front.git
 cd prava
 npm install
 ```
@@ -86,7 +86,7 @@ npm run typecheck  # tsc --noEmit
 
 ## Deploy on Vercel
 
-1. Fork or import [this repository](https://github.com/lursmana1/prava)
+1. Fork or import [this repository](https://github.com/lursmana1/driving-theory-front)
 2. Add env var: `NEXT_PUBLIC_BACKEND_URL=https://nest-bw53.onrender.com`
 3. Deploy
 
