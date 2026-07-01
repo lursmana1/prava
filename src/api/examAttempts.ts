@@ -95,6 +95,33 @@ export async function getAttemptsHistory(
   return res.data;
 }
 
+export type WeakQuestion = {
+  questionId: number;
+  wrongCount: number;
+  question: unknown;
+};
+
+export type WeakSubject = {
+  subjectId: number;
+  wrongCount: number;
+  correctCount: number;
+  totalQuestions: number;
+};
+
+export async function getWeakQuestions(): Promise<WeakQuestion[]> {
+  const res = await BaseApi.get<{ data: WeakQuestion[] }>(
+    "/user-stats/weak-questions",
+  );
+  return res.data?.data ?? [];
+}
+
+export async function getWeakSubjects(): Promise<WeakSubject[]> {
+  const res = await BaseApi.get<{ data: WeakSubject[] }>(
+    "/user-stats/weak-subjects",
+  );
+  return res.data?.data ?? [];
+}
+
 export async function submitAnswer(
   attemptId: number,
   questionId: number | string,

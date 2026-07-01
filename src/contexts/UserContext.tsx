@@ -1,23 +1,64 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import BaseApi from "@/api/BaseApi";
 import type { User } from "@/lib/auth";
 
-const UserContext = createContext<User | null | undefined>(undefined);
-
-type UserProviderProps = {
+type UserContextValue = {
   user: User | null;
-  children: React.ReactNode;
+  loading: boolean;
+  setUser: (user: User | null) => void;
+  refresh: () => Promise<void>;
 };
 
-export function UserProvider({ user, children }: UserProviderProps) {
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+const UserContext = createContext<UserContextValue | undefined>(undefined);
+
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(async () => {
+    try {
+      const res = await BaseApi.get<User>("/auth/me");
+      setUser(res.data ?? null);
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return (
+    <UserContext.Provider value={{ user, loading, setUser, refresh }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
-export function useUser() {
+function useUserContext() {
   const context = useContext(UserContext);
   if (context === undefined) {
     throw new Error("useUser must be used within UserProvider");
   }
   return context;
+}
+
+/** Current user (null while loading or signed out). */
+export function useUser() {
+  return useUserContext().user;
+}
+
+/** Full auth state — user, loading flag, and refresh/setUser controls. */
+export function useAuth() {
+  return useUserContext();
 }

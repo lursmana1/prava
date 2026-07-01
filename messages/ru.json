@@ -166,5 +166,24 @@
     "loading": "Загрузка...",
     "continueWithGoogle": "Войти через Google",
     "or": "или"
+  },
+  "Profile": {
+    "title": "Мой профиль",
+    "subtitle": "Ваш прогресс и статистика экзаменов",
+    "name": "Имя",
+    "email": "Email",
+    "logout": "Выйти",
+    "statTotal": "Всего экзаменов",
+    "statPassed": "Сдано",
+    "statFailed": "Не сдано",
+    "statPassRate": "% сдачи",
+    "recentTitle": "Последние экзамены",
+    "colDate": "Дата",
+    "colScore": "Балл",
+    "colDuration": "Длительность",
+    "colResult": "Результат",
+    "passed": "Сдан",
+    "failed": "Не сдан",
+    "loading": "Загрузка..."
   }
 }

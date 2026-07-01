@@ -166,5 +166,24 @@
     "loading": "Loading...",
     "continueWithGoogle": "Continue with Google",
     "or": "or"
+  },
+  "Profile": {
+    "title": "My Profile",
+    "subtitle": "Your progress and exam statistics",
+    "name": "Name",
+    "email": "Email",
+    "logout": "Log out",
+    "statTotal": "Total exams",
+    "statPassed": "Passed",
+    "statFailed": "Failed",
+    "statPassRate": "Pass rate",
+    "recentTitle": "Recent exams",
+    "colDate": "Date",
+    "colScore": "Score",
+    "colDuration": "Duration",
+    "colResult": "Result",
+    "passed": "Passed",
+    "failed": "Failed",
+    "loading": "Loading..."
   }
 }

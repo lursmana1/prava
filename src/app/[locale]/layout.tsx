@@ -4,7 +4,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { getUser } from "@/lib/auth";
 import { UserProvider } from "@/contexts/UserContext";
 import "@/app/globals.css";
 
@@ -49,7 +48,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const [messages, user] = await Promise.all([getMessages(), getUser()]);
+  const messages = await getMessages();
 
   return (
     <html lang={locale}>
@@ -59,7 +58,7 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansGeorgian.variable} antialiased`}
       >
-        <UserProvider user={user}>
+        <UserProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}
           </NextIntlClientProvider>

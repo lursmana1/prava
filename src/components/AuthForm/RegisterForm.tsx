@@ -3,10 +3,14 @@
 import { Form, Input, Button } from "antd";
 import { useTranslations } from "next-intl";
 import BaseApi from "@/api/BaseApi";
+import { useRouter } from "@/i18n/navigation";
+import { useAuth } from "@/contexts/UserContext";
 
 export default function RegisterForm() {
   const t = useTranslations("Auth");
   const [form] = Form.useForm();
+  const router = useRouter();
+  const { refresh } = useAuth();
 
   const onFinish = async (values: {
     name: string;
@@ -22,7 +26,8 @@ export default function RegisterForm() {
         email: values.email,
         password: values.password,
       });
-      // TODO: set user in auth context, redirect
+      await refresh();
+      router.push("/profile");
     } catch (err) {
       console.error(err);
     }

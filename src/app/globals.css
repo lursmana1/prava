@@ -13,13 +13,30 @@
   --font-georgian: var(--font-georgian);
 }
 
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  label.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled),
+  .ant-select:not(.ant-select-disabled) .ant-select-selector,
+  .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled),
+  a[href] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}
+
 @layer utilities {
   .font-georgian {
     font-family: var(--font-georgian);
   }
 
   .section {
-    @apply w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8;
+    @apply w-full max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-10;
   }
 }
 

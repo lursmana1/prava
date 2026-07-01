@@ -3,10 +3,14 @@
 import BaseApi from "@/api/BaseApi";
 import { Form, Input, Button } from "antd";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
+import { useAuth } from "@/contexts/UserContext";
 
 export default function LoginForm() {
   const t = useTranslations("Auth");
   const [form] = Form.useForm();
+  const router = useRouter();
+  const { refresh } = useAuth();
 
   const onFinish = async ({
     email,
@@ -17,6 +21,8 @@ export default function LoginForm() {
   }) => {
     try {
       await BaseApi.post("/auth/login", { email, password });
+      await refresh();
+      router.push("/profile");
     } catch {
       // TODO: show error message to user
     }
